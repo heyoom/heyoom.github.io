@@ -36,15 +36,17 @@ jobs:
 
           # vault 전체에서 published: true인 .md 파일 찾기
           # (.obsidian, .trash 등 시스템 폴더 제외)
-          find obsidian-vault -name "*.md" \
+          find -L obsidian-vault -name "*.md" \
             -not -path "*/\.obsidian/*" \
             -not -path "*/\.trash/*" \
             -not -path "*/\.smtcmp*/*" \
             -not -path "*/\.tmp*/*" \
             -not -path "*/\.space/*" \
+            -not -path "*/\.assets/*" \
+            2>/dev/null \
             | while read file; do
-            # frontmatter에서 published: true 확인
-            if grep -q "^published: true" "$file"; then
+            # frontmatter에서 published: true 또는 published: "true" 확인
+            if grep -qE "^published: (true|\"true\")" "$file"; then
               echo "✅ Publishing: $file"
 
               # 파일명 추출

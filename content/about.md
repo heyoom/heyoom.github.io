@@ -1,9 +1,6 @@
 ---
 title: "소개"
 date: 2019-09-01
-menu:
-  main:
-    weight: 3
 ---
 
 ## 개인정보

@@ -23,9 +23,24 @@ theme = "coderon"
     weight = 1
 
   [[menu.main]]
+    name = "러닝"
+    url = "/categories/러닝/"
+    weight = 2
+
+  [[menu.main]]
+    name = "일상"
+    url = "/categories/일상/"
+    weight = 3
+
+  [[menu.main]]
     name = "Archive"
     url = "/archive/"
-    weight = 2
+    weight = 4
+
+  [[menu.main]]
+    name = "소개"
+    url = "/about/"
+    weight = 5
 
 #-------------------------------
 # Author Settings

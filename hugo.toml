@@ -2,8 +2,9 @@
 # General Site Settings
 baseURL = "https://moyorun.com/"
 languageCode = "ko-kr"
-title = "모요런 (MoyoRun)"
+title = "모요런"
 theme = "coderon"
+disqusShortname = "moyoreon"
 
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
@@ -53,13 +54,29 @@ theme = "coderon"
 [params.hero]
   enable = true
   hero_avatar = "/images/profile.png"
-  hero_title = "모요런 (MoyoRun)"
+  hero_title = "모요런"
   hero_subtitle = "40대 달리기를 즐겨하는 기획&개발자"
   hero_description = "코드를 짜고, 아스팔트를 달리며, 생각을 정리합니다. 기획과 개발, 그리고 삶의 균형을 찾아가는 여정을 기록합니다."
   hero_image = "/images/hero.png"
-  hero_image_caption = "안 아프고 꾸준히 달리며 건강하게 살다 가기"
+  hero_image_caption = "중요한 건 기록이지. 기록 없으면 무슨 재미로 달리나"
   hero_button_text = "함께하기"
   hero_button_link = "/about"
+
+  # Marathon Personal Records
+  [[params.hero.marathon_records]]
+    distance = "10K"
+    time = "00:45:56"
+    event = "'24.11.17 부천 복사골 마라톤"
+
+  [[params.hero.marathon_records]]
+    distance = "Half"
+    time = "01:40:55"
+    event = "'25.09.28 인천 송도 국제마라톤"
+
+  [[params.hero.marathon_records]]
+    distance = "Full"
+    time = "03:48:59"
+    event = "'25.04.20 경기 마라톤"
 
 #-------------------------------
 # Blog Section
@@ -90,7 +107,7 @@ theme = "coderon"
   enable = false
 
 [params.disqus]
-  enable = false
+  enable = true
 
 #-------------------------------
 # Footer Settings

@@ -1,0 +1,133 @@
+{{ if .Site.Params.hero.enable }}
+<!-- begin hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div class="row">
+
+        <div class="col col-6 col-d-12">
+          <div class="hero__left">
+            <div class="hero__image">
+              <img class="lazy" data-src="{{ .Site.Params.hero.hero_image }}" alt="{{ .Site.Params.author.author_name }}'s Picture">
+            </div>
+            {{ if .Site.Params.hero.hero_image_caption }}
+            <div class="hero__image__caption">{{ .Site.Params.hero.hero_image_caption | markdownify }}</div>
+            {{ end }}
+          </div>
+        </div>
+
+        <div class="col col-6 col-d-12">
+          <div class="hero__right">
+            {{ if .Site.Params.hero.hero_avatar }}
+            <div class="hero__avatar">
+              <img class="lazy" data-src="{{ .Site.Params.hero.hero_avatar }}" alt="{{ .Site.Params.author.author_name }}">
+            </div>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_title }}
+            <h1 class="hero__title">{{ .Site.Params.hero.hero_title }}</h1>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_subtitle }}
+            <p class="hero__subtitle">{{ .Site.Params.hero.hero_subtitle }}</p>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_description }}
+            <div class="hero__description">{{ .Site.Params.hero.hero_description | markdownify }}</div>
+            {{ end }}
+
+            {{ if .Site.Params.hero.marathon_records }}
+            <div class="marathon-records">
+              <h3 class="marathon-records__title">🏃 공식 기록</h3>
+              <div class="marathon-records__list">
+                {{ range .Site.Params.hero.marathon_records }}
+                <div class="marathon-record">
+                  <span class="marathon-record__distance">{{ .distance }}</span>
+                  <span class="marathon-record__time">{{ .time }}</span>
+                  <span class="marathon-record__event">{{ .event }}</span>
+                </div>
+                {{ end }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_button_text }}
+            <a href="{{ .Site.Params.hero.hero_button_link }}" class="hero__button button button--primary">{{ .Site.Params.hero.hero_button_text }}</a>
+            {{ end }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end hero -->
+
+<style>
+.marathon-records {
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--brand-color);
+}
+
+.marathon-records__title {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--heading-font-color);
+}
+
+.marathon-records__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.marathon-record {
+  display: grid;
+  grid-template-columns: 60px 100px 1fr;
+  gap: 15px;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 15px;
+}
+
+.marathon-record__distance {
+  font-weight: 700;
+  color: var(--brand-color);
+  font-size: 16px;
+}
+
+.marathon-record__time {
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--heading-font-color);
+  font-size: 16px;
+}
+
+.marathon-record__event {
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 768px) {
+  .marathon-record {
+    grid-template-columns: 50px 90px 1fr;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .marathon-record__distance,
+  .marathon-record__time {
+    font-size: 14px;
+  }
+
+  .marathon-record__event {
+    font-size: 12px;
+  }
+}
+</style>
+{{ end }}

@@ -1,0 +1,109 @@
+/* Marathon Records in Hero */
+.marathon-records {
+  margin: 25px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--brand-color);
+}
+
+.marathon-records__title {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--heading-font-color);
+}
+
+.marathon-records__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.marathon-record {
+  display: grid;
+  grid-template-columns: 60px 100px 1fr;
+  gap: 15px;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 15px;
+}
+
+.marathon-record__distance {
+  font-weight: 700;
+  color: var(--brand-color);
+  font-size: 16px;
+}
+
+.marathon-record__time {
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--heading-font-color);
+  font-size: 16px;
+}
+
+.marathon-record__event {
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+/* Article Taxonomy (Categories + Tags) */
+.article__taxonomy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.article__categories,
+.article__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.article__category {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--brand-color);
+  background: transparent;
+  border: 1.5px solid var(--brand-color);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.article__category:hover {
+  background: var(--brand-color);
+  color: #fff;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+  .marathon-record {
+    grid-template-columns: 50px 90px 1fr;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .marathon-record__distance,
+  .marathon-record__time {
+    font-size: 14px;
+  }
+
+  .marathon-record__event {
+    font-size: 12px;
+  }
+
+  .article__taxonomy {
+    gap: 6px;
+  }
+
+  .article__category {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+}

@@ -5,9 +5,9 @@
 echo "🔄 Obsidian 파일 동기화 시작..."
 echo ""
 
-# content/posts 폴더 초기화
+# content/posts, static/images 폴더 초기화
 rm -rf content/posts
-mkdir -p content/posts
+mkdir -p content/posts static/images
 
 # vault 전체에서 published: true인 .md 파일 찾기
 # (.obsidian, .trash 등 시스템 폴더 제외)
@@ -26,11 +26,29 @@ find -L obsidian-vault -name "*.md" \
 
     # 파일명 추출
     filename=$(basename "$file")
+    title=$(basename "$file" .md)
 
-    # Wiki links 변환 및 published 필드 제거
-    # - [[title]] -> [title](/posts/title)
-    # - published: true 라인 삭제 (Hugo가 날짜로 파싱하려고 하는 문제 방지)
-    sed -e 's/\[\[\([^]]*\)\]\]/[\1](\/posts\/\1)/g' -e '/^published:/d' "$file" > "content/posts/$filename"
+    # Wiki links 변환, published 필드 제거, title 추가
+    {
+      # frontmatter 시작
+      echo "---"
+      # title이 없으면 추가
+      if ! grep -q "^title:" "$file"; then
+        echo "title: \"$title\""
+      fi
+      # 기존 frontmatter 복사 (published 제외)
+      sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d' | grep -v "^published:"
+      echo "---"
+      # 본문 복사 (frontmatter 이후)
+      awk '/^---$/ {count++; next} count >= 2 {print}' "$file"
+    } | sed -e 's/!\[\[\([^]]*\)\]\]/![\1](\/images\/\1)/g' \
+           -e 's/\[\[\([^]]*\)\]\]/[\1](\/posts\/\1)/g' > "content/posts/$filename"
+
+    # 이미지 파일 복사
+    file_dir=$(dirname "$file")
+    if [ -d "$file_dir/assets" ]; then
+      find "$file_dir/assets" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.webp" \) -exec cp {} static/images/ \; 2>/dev/null
+    fi
   fi
 done
 

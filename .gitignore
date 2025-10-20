@@ -8,7 +8,7 @@
 
 # Obsidian
 .obsidian/
-obsidian-vault/.obsidian/
+obsidian-vault/
 
 # Theme (다운로드한 원본)
 /coderon/

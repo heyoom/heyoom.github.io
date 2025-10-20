@@ -136,12 +136,25 @@ print(result, end='')
 " > "content/posts/$filename"
 
     rm -f "$temp_file"
+  fi
+done
 
-    # 이미지 파일 복사
-    file_dir=$(dirname "$file")
-    if [ -d "$file_dir/assets" ]; then
-      find "$file_dir/assets" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" -o -name "*.webp" \) -exec cp {} static/images/ \; 2>/dev/null
-    fi
+# 모든 포스트에서 사용된 이미지 파일 수집 및 복사
+echo ""
+echo "📸 이미지 복사 중..."
+grep -oh "IMG-[0-9]*\.[a-z]*" content/posts/*.md 2>/dev/null | sort -u | while read img; do
+  # static/images에 이미 있으면 건너뛰기
+  if [ -f "static/images/$img" ]; then
+    continue
+  fi
+
+  # vault에서 이미지 찾기
+  found=$(find -L "$VAULT_PATH" -name "$img" 2>/dev/null | head -1)
+  if [ -n "$found" ]; then
+    cp "$found" static/images/
+    echo "  ✓ $img"
+  else
+    echo "  ✗ $img (not found)"
   fi
 done
 

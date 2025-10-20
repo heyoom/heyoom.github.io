@@ -1,0 +1,86 @@
+name: Deploy Hugo site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Obsidian → Hugo 변환 (published: true만 필터링)
+      - name: Convert Obsidian to Hugo
+        run: |
+          # content 폴더 초기화
+          mkdir -p content/posts
+
+          # vault 전체에서 published: true인 .md 파일 찾기
+          # (.obsidian, .trash 등 시스템 폴더 제외)
+          find obsidian-vault -name "*.md" \
+            -not -path "*/\.obsidian/*" \
+            -not -path "*/\.trash/*" \
+            -not -path "*/\.smtcmp*/*" \
+            -not -path "*/\.tmp*/*" \
+            -not -path "*/\.space/*" \
+            | while read file; do
+            # frontmatter에서 published: true 확인
+            if grep -q "^published: true" "$file"; then
+              echo "✅ Publishing: $file"
+
+              # 파일명 추출
+              filename=$(basename "$file")
+
+              # Wiki links 변환: [[title]] -> [title](/posts/title)
+              sed 's/\[\[\([^]]*\)\]\]/[\1](\/posts\/\1)/g' "$file" > "content/posts/$filename"
+            fi
+          done
+
+          # 변환된 파일 확인
+          echo ""
+          echo "📝 Published files:"
+          ls -la content/posts/ || echo "No files published"
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

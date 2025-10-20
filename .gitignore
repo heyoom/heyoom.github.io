@@ -1,0 +1,17 @@
+# Hugo
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# macOS
+.DS_Store
+
+# Obsidian
+.obsidian/
+obsidian-vault/.obsidian/
+
+# Theme (다운로드한 원본)
+coderon/
+
+# Temp
+*.log

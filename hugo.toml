@@ -1,0 +1,112 @@
+#-------------------------------
+# General Site Settings
+baseURL = "https://moyorun.com/"
+languageCode = "ko-kr"
+title = "모요런 (MoyoRun)"
+theme = "coderon"
+
+[params]
+  description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
+
+#-------------------------------
+# Color Scheme
+[params.color_scheme]
+  default = "dark"
+  toggle = true
+
+#-------------------------------
+# Main Menu
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Archive"
+    url = "/archive/"
+    weight = 2
+
+#-------------------------------
+# Author Settings
+[params.author]
+  author_name = "heyoom"
+  author_avatar = ""
+
+#-------------------------------
+# Hero Settings
+[params.hero]
+  enable = true
+  hero_title = "모요런 (MoyoRun)"
+  hero_subtitle = "40대 달리기를 즐겨하는 기획&개발자"
+  hero_description = "코드를 짜고, 아스팔트를 달리며, 생각을 정리합니다. 기획과 개발, 그리고 삶의 균형을 찾아가는 여정을 기록합니다."
+
+#-------------------------------
+# Blog Section
+[params.blog]
+  enable = true
+  blog_title = "최근 글"
+
+#-------------------------------
+# Pagination
+[pagination]
+  pagerSize = 10
+
+#-------------------------------
+# Other Features (비활성화)
+[params.logos]
+  enable = false
+
+[params.tags_section]
+  enable = false
+
+[params.videos]
+  enable = false
+
+[params.gallery]
+  enable = false
+
+[params.mailchimp]
+  enable = false
+
+[params.disqus]
+  enable = false
+
+#-------------------------------
+# Footer Settings
+[params.footer]
+  footer_description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
+
+#-------------------------------
+# Social Settings
+[[params.social]]
+  icon = "fa-brands fa-github"
+  name = "Github"
+  link = "https://github.com/heyoom"
+
+#-------------------------------
+# Taxonomies
+[taxonomies]
+  tag = "tags"
+
+#-------------------------------
+# Markup
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+  [markup.tableOfContents]
+    startLevel = 2
+    ordered = true
+    endLevel = 3
+
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    noClasses = false
+
+#-------------------------------
+# Output Formats
+[outputs]
+  home = ["HTML", "RSS", "JSON"]

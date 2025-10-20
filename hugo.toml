@@ -18,7 +18,7 @@ theme = "coderon"
 # Main Menu
 [menu]
   [[menu.main]]
-    name = "Home"
+    name = "홈"
     url = "/"
     weight = 1
 
@@ -33,7 +33,7 @@ theme = "coderon"
     weight = 3
 
   [[menu.main]]
-    name = "Archive"
+    name = "보관함"
     url = "/archive/"
     weight = 4
 
@@ -45,16 +45,21 @@ theme = "coderon"
 #-------------------------------
 # Author Settings
 [params.author]
-  author_name = "heyoom"
-  author_avatar = ""
+  author_name = "모요"
+  author_avatar = "/images/profile.png"
 
 #-------------------------------
 # Hero Settings
 [params.hero]
   enable = true
+  hero_avatar = "/images/profile.png"
   hero_title = "모요런 (MoyoRun)"
   hero_subtitle = "40대 달리기를 즐겨하는 기획&개발자"
   hero_description = "코드를 짜고, 아스팔트를 달리며, 생각을 정리합니다. 기획과 개발, 그리고 삶의 균형을 찾아가는 여정을 기록합니다."
+  hero_image = "/images/hero.png"
+  hero_image_caption = "안 아프고 꾸준히 달리며 건강하게 살다 가기"
+  hero_button_text = "함께하기"
+  hero_button_link = "/about"
 
 #-------------------------------
 # Blog Section
@@ -98,6 +103,11 @@ theme = "coderon"
   icon = "fa-brands fa-github"
   name = "Github"
   link = "https://github.com/heyoom"
+
+[[params.social]]
+  icon = "fa-solid fa-globe"
+  name = "Website"
+  link = "https://minorlab.com"
 
 #-------------------------------
 # Taxonomies

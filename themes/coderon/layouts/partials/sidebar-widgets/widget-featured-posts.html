@@ -1,0 +1,42 @@
+{{ range first 1 (where (where .Site.RegularPages "Type" "in" site.Params.mainSections) ".Params.featured" "=" true) }}
+  {{ $.Scratch.Set "featured" true }}
+{{ end }}
+
+{{ if $.Scratch.Get "featured" }}
+<div class="widget widget-featured-posts">
+  <div class="widget-sidebar-head">
+    <h2 class="widget-sidebar-title">Featured posts</h2>
+  </div>
+{{ $featured := first 8 (where (where (where .Site.RegularPages "Type" "in" site.Params.mainSections) ".Params.featured" "=" true) "Permalink" "!=" .Permalink)}}
+{{ range $featured }}
+  <div class="post-featured-content">
+    {{ $img := .Page.Resources.GetMatch .Params.image }}
+    {{ if or ($img) (.Params.image) }}
+    <a href="{{ .Permalink }}" class="post-featured-image">
+
+      {{ if and (.Params.image) (.Params.video_embed) }}
+      <div class="video-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <polygon points="40,30 70,50 40,70"></polygon>
+        </svg>
+      </div>
+      {{ end }}
+
+      {{ if $img }}
+      <img class="lazy" data-src="{{ $img.RelPermalink }}" alt="{{ .Params.title }}">
+      {{ else if .Params.image }}
+      <img class="lazy" data-src="{{ .Params.image | absURL }}" alt="{{ .Params.title }}">
+      {{ end }}
+    </a>
+    {{ else }}
+    {{ end }}
+
+    <div class="post-featured-meta">
+      <h3 class="post-featured-title"><a href="{{ .Permalink }}">{{ .Params.title }}</a></h3>
+      <time class="post-featured-date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "02 Jan, 2006" }}</time>
+    </div>
+  </div>
+{{ end }}
+
+</div>
+{{ end }}

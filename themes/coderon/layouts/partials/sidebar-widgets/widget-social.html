@@ -1,0 +1,14 @@
+{{ if .Site.Params.social }}
+{{ with .Site.Params.social }}
+<div class="widget widget-social">
+  <ul class="widget-social__list list-reset">
+    {{ range . }}
+    <li class="widget-social__item">
+      <a class="widget-social__link" href="{{ .link }}" target="_blank" rel="noopener"
+        aria-label="{{ .name }} link"><i class="{{ .icon }}"></i></a>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}
+{{ end }}

@@ -1,0 +1,57 @@
+{{ if .Site.Params.tags_section.enable }}
+<!-- begin section-tags -->
+<section class="section section-tags">
+  <div class="section-tags__inner">
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+
+          <div class="section__head">
+            {{ if .Site.Params.tags_section.tags_section_title }}
+            <h2 class="section__title">{{ .Site.Params.tags_section.tags_section_title }}</h2>
+            {{ end }}
+          </div>
+
+          <div class="row">
+            {{ range .Site.Params.tags_section_tag }}
+              {{ $tag := .tag }}
+              {{ $tagImage := .image }}
+              {{ with $.Site.GetPage (printf "/tags/%s" $tag | urlize) }}
+                {{ $posts_with_tag := where $.Site.RegularPages "Params.tags" "intersect" (slice $tag) }}
+
+                {{ $tagColor := "" }}
+                {{ range $posts_with_tag }}
+                  {{ if .Params.tags_color }}
+                    {{ $tagColor = .Params.tags_color }}
+                  {{ end }}
+                {{ end }}
+
+                {{ if gt (len $posts_with_tag) 0 }}
+                <div class="col col-3 col-d-6 col-m-12">
+                  {{ if $tagImage }}
+                  <a href="{{ .RelPermalink }}" class="section-tags__image" style="outline-color: {{ if $tagColor }}{{ $tagColor }}{{ else }}var(--dark-gray){{ end }};;">
+                    <span class="section-tags__name" style="background-color: {{ if $tagColor }}{{ $tagColor }}{{ else }}var(--dark-gray){{ end }};">{{ .Title }}</span>
+                    <img class="lazy" data-src="{{ $tagImage | relURL }}" alt="{{ .Title }}">
+                  </a>
+                  {{ end }}
+
+                  <div class="section-tags__content">
+                    {{ range first 4 $posts_with_tag }}
+                    <h3 class="section-tags__title">
+                      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </h3>
+                    {{ end }}
+                  </div>
+                </div>
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end section-tags -->
+{{ end }}

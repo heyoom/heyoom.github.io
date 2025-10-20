@@ -1,0 +1,38 @@
+{{ define "main" }}
+
+<!-- begin tags -->
+<section class="section tags">
+  <div class="container">
+    <div class="row">
+
+        <div class="col col-8 col-d-12">
+          <div class="tags__inner">
+            <div class="tag__info">
+              <div class="tag__info__box">
+                <h2 class="tag__title">{{ .Title }}</h2>
+                <p class="tag__description">A collection of <span>{{ len .Pages }} {{ if lt (len .Pages) 2 }}Post{{ else }}Posts{{ end }}</span></p>
+              </div>
+            </div>
+            <div class="row">
+            {{ range .Data.Pages }}
+              {{ partial "article.html" . }}
+            {{ end }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col col-4 col-d-12">
+          <aside class="sidebar">
+            {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+            {{ partial "sidebar-widgets/widget-social.html" . }}
+            {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+            {{ partial "sidebar-widgets/widget-tags.html" . }}
+          </aside>
+        </div>
+
+      </div>
+    </div>
+</section>
+<!-- end tags -->
+
+{{ end }}

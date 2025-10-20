@@ -1,0 +1,50 @@
+{{ if .Site.Params.hero.enable }}
+<!-- begin hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div class="row">
+
+        <div class="col col-6 col-d-12">
+          <div class="hero__left">
+            <div class="hero__image">
+              <img class="lazy" data-src="{{ .Site.Params.hero.hero_image }}" alt="{{ .Site.Params.author.author_name }}'s Picture">
+            </div>
+            {{ if .Site.Params.hero.hero_image_caption }}
+            <div class="hero__image__caption">{{ .Site.Params.hero.hero_image_caption | markdownify }}</div>
+            {{ end }}
+          </div>
+        </div>
+
+        <div class="col col-6 col-d-12">
+          <div class="hero__right">
+            {{ if .Site.Params.hero.hero_avatar }}
+            <div class="hero__avatar">
+              <img class="lazy" data-src="{{ .Site.Params.hero.hero_avatar }}" alt="{{ .Site.Params.author.author_name }}">
+            </div>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_title }}
+            <h1 class="hero__title">{{ .Site.Params.hero.hero_title }}</h1>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_subtitle }}
+            <p class="hero__subtitle">{{ .Site.Params.hero.hero_subtitle }}</p>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_description }}
+            <div class="hero__description">{{ .Site.Params.hero.hero_description | markdownify }}</div>
+            {{ end }}
+
+            {{ if .Site.Params.hero.hero_button_text }}
+            <a href="{{ .Site.Params.hero.hero_button_link }}" class="hero__button button button--primary">{{ .Site.Params.hero.hero_button_text }}</a>
+            {{ end }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end hero -->
+{{ end }}

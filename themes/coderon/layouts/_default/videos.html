@@ -1,0 +1,42 @@
+{{ define "main" }}
+
+<!-- begin videos-page -->
+<section class="section videos-page">
+  <div class="container">
+    <div class="section__inner">
+      <div class="row">
+
+        <div class="col col-8 col-d-12">
+          <section class="hero-page">
+            <div class="hero-page__inner">
+              {{ if .Title }}
+              <h1 class="hero-page__title">{{ .Title }}</h1>
+              {{ end }}
+              {{ if .Params.description }}
+              <div class="hero-page__description">{{ .Params.description }}</div>
+              {{ end }}
+            </div>
+          </section>
+          <div class="row">
+          {{ range (where (where .Site.RegularPages "Type" "in" site.Params.mainSections) ".Params.video_embed" "!=" nil) }}
+            {{ partial "article" . }}
+          {{ end }}
+          </div>
+        </div>
+
+        <div class="col col-4 col-d-12">
+          <aside class="sidebar">
+            {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+            {{ partial "sidebar-widgets/widget-social.html" . }}
+            {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+            {{ partial "sidebar-widgets/widget-tags.html" . }}
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end videos-page -->
+
+{{ end }}

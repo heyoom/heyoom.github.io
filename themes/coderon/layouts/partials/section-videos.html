@@ -1,0 +1,59 @@
+{{ if .Site.Params.videos.enable }}
+<!-- begin section-videos -->
+<section class="section section-videos">
+
+  <div class="section-videos__inner">
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+
+          <div class="section__head">
+            {{ if .Site.Params.videos.videos_title }}
+            <h2 class="section__title">{{ .Site.Params.videos.videos_title }}</h2>
+            {{ end }}
+          </div>
+
+          <div class="row">
+            {{ range (where (where .Site.RegularPages "Type" "in" site.Params.mainSections) ".Params.video_embed" "!=" nil | first 3) }}
+            <div class="article col col-3 col-d-5 col-m-12 push-1 push-m-0">
+              <div class="article__inner">
+
+                {{ if .Params.Image }}
+                {{ $img := .Resources.GetMatch .Params.Image }}
+                <div class="article__head">
+                  {{ if .Params.video_embed }}
+                  <div class="video-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                      <polygon points="40,30 70,50 40,70"></polygon>
+                    </svg>
+                  </div>
+                  {{ end }}
+
+                  <a class="article__image" href="{{ .RelPermalink }}">
+                    {{ if $img }}
+                    <img class="lazy" data-src="{{ $img.RelPermalink }}" alt="{{ .Title }}">
+                    {{ else }}
+                    <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+                    {{ end }}
+                  </a>
+                </div>
+                {{ end }}
+
+                <div class="article__content">
+                  <h2 class="article__title">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  </h2>
+                </div>
+              </div>
+            </div>
+            {{ end }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- end section-videos -->
+{{ end }}

@@ -1,0 +1,301 @@
+#-------------------------------
+# General Site Settings
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Coderon"
+googleAnalytics = "" # Add your identifier. For example UA-99631805-1.
+
+
+[params]
+  logo = "" # You can add own logo. For example "/images/logo.png".
+  logo_dark = ""
+  description = "Coderon is a super modern and unique Hugo blog theme"
+
+
+#-------------------------------
+# Color Scheme:
+[params.color_scheme]
+  default = "dark" # Default theme applied on the first visit (options: "light" or "dark")
+  toggle = true # Enable theme toggle
+
+# Enables or disables the theme toggle functionality:
+# - true: Users can switch between light and dark modes using a toggle button.
+#          The site will remember their choice for future visits.
+# - false: The theme will always use the default mode specified above,
+#          and the toggle button will not be displayed.
+
+
+#-------------------------------
+# Main Menu
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "Videos"
+    url = "/videos/"
+    weight = 2
+
+  [[menu.main]]
+    name = "Archive"
+    url = "/archive/"
+    weight = 3
+
+  [[menu.main]]
+    name = "Pages"
+    weight = 4
+    hasChildren = true
+
+  [[menu.main]]
+    parent = "Pages"
+    name = "About"
+    url = "/about/"
+    weight = 1
+
+  [[menu.main]]
+    parent = "Pages"
+    name = "Contact"
+    url = "/contact/"
+    weight = 2
+
+  [[menu.main]]
+    parent = "Pages"
+    name = "Elements"
+    url = "/elements/"
+    weight = 3
+
+
+#-------------------------------
+# Author Settings
+[params.author]
+  author_name = "Alex Dias"
+  author_avatar = "https://placehold.co/120x120"
+
+
+#-------------------------------
+# Hero Settings
+[params.hero]
+  enable = true
+  hero_avatar = "https://placehold.co/120x120"
+  hero_title = "Hi! I’m Alex 👋"
+  hero_subtitle = "A digital explorer, coder, and Linux advocate"
+  hero_description = """
+  I’m a digital explorer, coder, and Linux advocate. This blog is my personal knowledge base on productivity, programming, and the freedom of information.
+
+  Here, I share ideas, tools, and methods that help me balance productivity with creativity while keeping control over my digital world. Dive in, get inspired, and feel free to share your thoughts!
+  """
+  hero_image = "https://placehold.co/1200x900"
+  hero_image_caption = "My creative space, where masterpieces are born"
+  hero_button_text = "Let’s Work Together"
+  hero_button_link = "/contact"
+
+
+#-------------------------------
+# Logos Settings
+[params.logos]
+  enable = true
+  logos_title = "Nerd Stuff"
+
+  [[params.logo_image]]
+    alt = "Game Boy"
+    image = "https://placehold.co/140x140"
+
+  [[params.logo_image]]
+    alt = "Super Nintendo"
+    image = "https://placehold.co/140x140"
+
+  [[params.logo_image]]
+    alt = "Keyboard"
+    image = "https://placehold.co/140x140"
+
+  [[params.logo_image]]
+    alt = "Headphones"
+    image = "https://placehold.co/140x140"
+
+  [[params.logo_image]]
+    alt = "Mouse"
+    image = "https://placehold.co/140x140"
+
+
+#-------------------------------
+# Blog Section
+[params.blog]
+  enable = true
+  blog_title = "The Binary Journal"
+
+
+#-------------------------------
+# Pagination settings:
+# For Hugo versions 0.128.0 and above, use the following settings:
+# This will set the number of items per page for newer versions.
+[pagination]
+  pagerSize = 4
+
+# For Hugo versions below 0.128.0, uncomment the line below and comment out the [pagination] block above:
+#paginate = 9 # Sets the number of items per page for older versions.
+
+
+#-------------------------------
+# Tags Section Settings
+[params.tags_section]
+  enable = true
+  tags_section_title = "Hacker’s Haven"
+
+  [[params.tags_section_tag]]
+    tag = "programming"
+    image = "https://placehold.co/1200x900"
+
+  [[params.tags_section_tag]]
+    tag = "linux"
+    image = "https://placehold.co/1200x900"
+
+  [[params.tags_section_tag]]
+    tag = "productivity"
+    image = "https://placehold.co/1200x900"
+
+  [[params.tags_section_tag]]
+    tag = "security"
+    image = "https://placehold.co/1200x900"
+
+
+#-------------------------------
+# Videos Section Settings
+[params.videos]
+  enable = true
+  videos_title = "Latest Videos"
+
+
+#-------------------------------
+# Gallery Section Settings
+[params.gallery]
+  enable = true
+  gallery_title = "Byte Frame"
+
+  [[params.gallery_image]]
+    alt = "Rest"
+    url = "https://placehold.co/1200x900"
+    caption = "Small steps lead to big results."
+
+  [[params.gallery_image]]
+    alt = "Lifestyle"
+    url = "https://placehold.co/1200x900"
+    caption = "A peaceful moment captured during a serene evening."
+
+  [[params.gallery_image]]
+    alt = "Hobby"
+    url = "https://placehold.co/1200x900"
+    caption = "True friends are like stars — they shine brightest when the world feels dark."
+
+  [[params.gallery_image]]
+    alt = "Computers"
+    url = "https://placehold.co/1200x900"
+    caption = "Every click opens a new chapter in an endless story."
+
+  [[params.gallery_image]]
+    alt = "Games"
+    url = "https://placehold.co/1200x900"
+    caption = "Every level is a new opportunity to test your limits."
+
+
+#-------------------------------
+# Newsletter Settings
+[params.mailchimp]
+  enable = true
+  mailchimp_title = "Stay inspired weekly ✌️"
+  mailchimp_description = "Every Sunday, I deliver actionable tips for enhancing productivity, practical life advice, and top-notch insights gathered from various sources, right to your email inbox."
+  mailchimp_identifier = "gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp" # Add your MailChimp form identifier. For example - gmail.us21.list-manage.com/subscribe/post?u=8aeb9c31a5c97a3a5f9ff2740&amp;id=0e31fd7793&amp
+  mailchimp_input_text = "Your email address..."
+  mailchimp_button_text = "Join Now"
+
+
+#-------------------------------
+# Footer Settings
+[params.footer]
+  footer_description = "Here, I share ideas, tools, and methods that help me balance productivity with creativity while keeping control over my digital world. Dive in, get inspired, and feel free to share your thoughts!"
+
+
+#-------------------------------
+# Social Settings
+[[params.social]]
+  icon = "fa-brands fa-x-twitter"
+  name = "Twitter"
+  link = "https://twitter.com"
+
+[[params.social]]
+  icon = "fa-brands fa-facebook"
+  name = "Facebook"
+  link = "https://facebook.com"
+
+[[params.social]]
+  icon = "fa-brands fa-mastodon"
+  name = "Mastodon"
+  link = "https://mastodon.social"
+
+[[params.social]]
+  icon = "fa-brands fa-reddit-alien"
+  name = "Reddit"
+  link = "https://reddit.com"
+
+[[params.social]]
+  icon = "fa-brands fa-github"
+  name = "Github"
+  link = "https://github.com"
+
+[[params.social]]
+  icon = "fa-solid fa-rss"
+  name = "Rss"
+  link = "/index.xml"
+
+# Example of adding a new link to the sidebar and footer:
+# [[params.social]]
+#   icon = "fa-brands fa-youtube"
+#   name = "Youtube"
+#   link = "https://youtube.com"
+
+# Other icons can be found at https://fontawesome.com/icons
+
+
+#-------------------------------
+# Contact Settings
+[params.contact]
+  form_id = "your@email.com" # Add your form_id
+  button_text = "Send Now"
+
+  # NOTE
+  # Coderon comes with a built-in contact form, that you can use with Formspree service to handle up to 50 submissions per month for free. You could also easily switch to another contact form service if you want.
+
+#-------------------------------
+# Comment Section (Disqus)
+[params.disqus]
+  enable = true
+  disqusShortname = "anvod-studio-test" # Add your shortname for Disqus Comment. For example anvod-studio-test
+  disqus_title = "Start the conversation"
+  disqus_button_text = "Show Comments"
+
+
+[taxonomies]
+  tag = "tags"
+
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+
+  [markup.tableOfContents]
+    startLevel = 2
+    ordered = true
+    endLevel = 3
+
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+
+[markup.highlight]
+  codeFences = true
+  guessSyntax = true
+  noClasses = false

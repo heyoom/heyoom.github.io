@@ -1,0 +1,19 @@
+{{ $related := first 3 ( where ( where .Site.Pages.ByDate.Reverse ".Params.tags" "intersect" .Params.tags ) "Permalink" "!=" .Permalink ) }}
+{{ with $related }}
+<!-- begin related posts -->
+<div class="related-posts">
+  <div class="section__info">
+    <div class="section__head">
+      <h2 class="section__title">Related</h2>
+    </div>
+  </div>
+  <div class="view-list">
+    <div class="row grid">
+      {{ range . }}
+        {{ partial "article.html" . }}
+      {{ end }}
+    </div>
+  </div>
+</div>
+<!-- end related posts -->
+{{ end }}

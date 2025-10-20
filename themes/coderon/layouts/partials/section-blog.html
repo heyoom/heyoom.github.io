@@ -1,0 +1,49 @@
+{{ if .Site.Params.blog.enable }}
+<!-- section-blog -->
+<section class="section section-blog">
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col col-12">
+        <div class="section__head">
+          {{ if .Site.Params.blog.blog_title }}
+          <h2 class="section__title">{{ .Site.Params.blog.blog_title }}</h2>
+          {{ end }}
+          <div class="blog__view">
+            <div class="blog__toggle">
+              <div class="icon">
+                <div class="icon-bar"></div>
+                <div class="icon-bar"></div>
+                <div class="icon-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-8 col-d-12">
+        <div class="row grid">
+        {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts" ) }}
+        {{ range $paginator.Pages }}
+          {{ partial "article" . }}
+        {{ end }}
+        </div>
+        {{ partial "pagination.html" . }}
+      </div>
+      <div class="col col-4 col-d-12">
+        <aside class="sidebar">
+          {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+          {{ partial "sidebar-widgets/widget-social.html" . }}
+          {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+          {{ partial "sidebar-widgets/widget-tags.html" . }}
+        </aside>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- section-blog -->
+{{ end }}

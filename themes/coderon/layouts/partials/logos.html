@@ -1,0 +1,26 @@
+{{ if .Site.Params.logos.enable }}
+<!-- begin section-logos -->
+<section class="section section-logos">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+        {{ if .Site.Params.logos.logos_title }}
+        <h2 class="logos-title">{{ .Site.Params.logos.logos_title }}</h2>
+        {{ end }}
+        <div class="logos splide">
+          <div class="splide__track">
+            <div class="logos__inner splide__list">
+              {{ range .Site.Params.logo_image }}
+              <div class="logos__image splide__slide">
+                <img src="{{ .image }}" alt="{{ .alt }}" loading="eager">
+              </div>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end section-logos -->
+{{ end }}

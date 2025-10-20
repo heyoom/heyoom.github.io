@@ -1,0 +1,24 @@
+{{ if gt (len .Site.Taxonomies.tags) 0 }}
+<div class="widget widget-tags">
+  <div class="widget-sidebar-head">
+    <h2 class="widget-sidebar-title">Topics</h2>
+  </div>
+
+  <div class="tag-cloud">
+    {{ range $tagName, $tagPages := .Site.Taxonomies.tags }}
+      {{ with $.Site.GetPage (printf "/tags/%s" $tagName | urlize) }}
+        {{ $tagColor := "" }}
+        {{ range $tagPages }}
+          {{ if .Params.tags_color }}
+            {{ $tagColor = .Params.tags_color }}
+          {{ end }}
+        {{ end }}
+        <a href="{{ .RelPermalink }}" class="tag-cloud__item"
+           style="background: {{ if $tagColor }}{{ $tagColor }}{{ else }}var(--dark-gray){{ end }};">
+          {{ .Title }}
+        </a>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}

@@ -11,7 +11,7 @@
 obsidian-vault/.obsidian/
 
 # Theme (다운로드한 원본)
-coderon/
+/coderon/
 
 # Temp
 *.log

@@ -1,0 +1,8 @@
+<div class="gallery-box">
+  <div class="gallery gallery-columns-{{ .Get "columns" | default "3" }}">
+    {{ .Inner }}
+  </div>
+  {{ with .Get "caption" }}
+  <p>{{ . }}</p>
+  {{ end }}
+</div>

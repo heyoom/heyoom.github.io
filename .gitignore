@@ -16,3 +16,5 @@ obsidian-vault/
 
 # Temp
 *.log
+/minorlab-tistory-backup
+/backup

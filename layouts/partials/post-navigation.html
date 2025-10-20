@@ -1,0 +1,55 @@
+{{ if or .NextInSection .PrevInSection }}
+<div class="post__navigation">
+  {{ if .PrevInSection }}
+  <div class="post__prev">
+    {{ if .PrevInSection.Params.Image }}
+    {{ $prevImg := .PrevInSection.Resources.GetMatch .PrevInSection.Params.Image }}
+    <a href="{{ .PrevInSection.Permalink }}" class="prev__image">
+      {{ if .PrevInSection.Params.video_embed }}
+      <div class="video-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <polygon points="40,30 70,50 40,70"></polygon>
+        </svg>
+      </div>
+      {{ end }}
+      {{ if $prevImg }}
+        <img class="lazy" data-src="{{ $prevImg.RelPermalink }}" alt="{{ .PrevInSection.Title }}">
+      {{ else }}
+        <img class="lazy" data-src="{{ .PrevInSection.Params.Image | absURL }}" alt="{{ .PrevInSection.Title }}">
+      {{ end }}
+    </a>
+    {{ end }}
+    <div class="prev__box">
+      <span class="post__nav__prev">이전 글</span>
+      <h2 class="post__nav__title"><a href="{{ .PrevInSection.Permalink }}">{{ .PrevInSection.Title }}</a></h2>
+    </div>
+  </div>
+  {{ end }}
+
+  {{ if .NextInSection }}
+  <div class="post__next">
+    <div class="next__box">
+      <span class="post__nav__next">다음 글</span>
+      <h2 class="post__nav__title"><a href="{{ .NextInSection.Permalink }}">{{ .NextInSection.Title }}</a></h2>
+    </div>
+    {{ if .NextInSection.Params.Image }}
+    {{ $nextImg := .NextInSection.Resources.GetMatch .NextInSection.Params.Image }}
+    <a href="{{ .NextInSection.Permalink }}" class="next__image">
+      {{ if .NextInSection.Params.video_embed }}
+      <div class="video-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <polygon points="40,30 70,50 40,70"></polygon>
+        </svg>
+      </div>
+      {{ end }}
+      {{ if $nextImg }}
+      <img class="lazy" data-src="{{ $nextImg.RelPermalink }}" alt="{{ .NextInSection.Title }}">
+      {{ else }}
+      <img class="lazy" data-src="{{ .NextInSection.Params.Image | absURL }}" alt="{{ .NextInSection.Title }}">
+      {{ end }}
+    </a>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+{{ end }}

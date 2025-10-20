@@ -4,7 +4,6 @@ baseURL = "https://moyorun.com/"
 languageCode = "ko-kr"
 title = "모요런"
 theme = "coderon"
-disqusShortname = "moyoreon"
 
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
@@ -39,14 +38,26 @@ disqusShortname = "moyoreon"
     weight = 4
 
   [[menu.main]]
+    identifier = "more"
+    name = "더보기"
+    weight = 5
+
+  [[menu.main]]
+    name = "러닝 기록"
+    url = "/running-history/"
+    parent = "more"
+    weight = 1
+
+  [[menu.main]]
     name = "소개"
     url = "/about/"
-    weight = 5
+    parent = "more"
+    weight = 2
 
 #-------------------------------
 # Author Settings
 [params.author]
-  author_name = "모요"
+  author_name = "모요!"
   author_avatar = "/images/profile.png"
 
 #-------------------------------
@@ -107,6 +118,9 @@ disqusShortname = "moyoreon"
   enable = false
 
 [params.disqus]
+  enable = false
+
+[params.giscus]
   enable = true
 
 #-------------------------------

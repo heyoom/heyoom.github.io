@@ -1,0 +1,162 @@
+{{ define "main" }}
+
+{{ if or (eq .Section "post") (eq .Section "posts") }}
+
+<!-- begin post -->
+<div class="container">
+
+  <div class="row">
+    <div class="col col-8 col-d-12">
+
+      <div class="post-head">
+
+        {{ if .Params.video_embed }}
+        <div class="post-video">
+          <div class="post-video__wrap">
+            <iframe src="{{ .Params.video_embed }}" loading="lazy" width="640" height="360" frameborder="0"
+              webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+        {{ else }}
+
+        {{ if .Params.image }}
+        {{ $img := $.Page.Resources.GetMatch .Params.Image }}
+        <div class="post-image">
+        {{ if $img }}
+          <img class="lazy" data-src="{{ $img.RelPermalink }}" alt="{{ .Title }}">
+        {{ else }}
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+        {{ end }}
+        </div>
+        {{ end }}
+        {{ end }}
+
+        <div class="post-info">
+          {{ if .Params.tags }}
+          <div class="post-tags">
+            {{ range ($.GetTerms "tags") }}
+            <a href="{{ .Permalink }}" class="post-tag"
+              style="background: {{ with $.Params.tags_color }}{{ . }}{{ else }}var(--dark-gray){{ end }};">{{ .LinkTitle }}</a>
+            {{ end }}
+          </div>
+          {{ end }}
+
+          <h1 class="post-title">{{ .Title }}</h1>
+
+
+          <div class="post-meta">
+            <a href="/about/" class="post-meta__image">
+              <img class="lazy" data-src="{{ .Site.Params.author.author_avatar }}" alt="{{ .Site.Params.author.author_name }}">
+            </a>
+
+            <div class="post-meta__content">
+              <a class="post-meta__author" href="/about/">{{ .Site.Params.author.author_name
+                }}</a>
+              <div class="post-meta__bottom">
+                <time class="post-date" datetime="{{ .Date.Format " 2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006년 01월 02일"
+                  }}</time> –
+                <span class="post-minutes">{{ .ReadingTime }}분 소요</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <article class="post">
+        <div class="post__content">
+          {{ if .Params.toc }}
+          <div class="post__toc">
+            <h2 class="post__toc__title">Table of Contents</h2>
+            {{ .TableOfContents }}
+          </div>
+          {{ end }}
+          {{ .Content }}
+        </div>
+      </article>
+
+      {{ partial "share-buttons.html" . }}
+      {{ partial "post-navigation.html" . }}
+      {{ if .Site.Params.giscus.enable }}
+      {{ partial "giscus-comments.html" . }}
+      {{ end }}
+      {{ partial "related-posts.html" . }}
+    </div>
+
+    <div class="col col-4 col-d-12">
+      <aside class="sidebar">
+        {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+        {{ partial "sidebar-widgets/widget-social.html" . }}
+        {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+        {{ partial "sidebar-widgets/widget-tags.html" . }}
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- end post -->
+
+{{ else }}
+
+<!-- begin page -->
+<div class="container">
+  <div class="row">
+
+    <div class="col col-8 col-d-12">
+      <div class="page-head">
+
+        {{ if .Params.video_embed }}
+        <div class="page-video">
+          <div class="page-video__wrap">
+            <iframe src="{{ .Params.video_embed }}" loading="lazy" width="640" height="360" frameborder="0"
+              webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+        {{ else }}
+
+        {{ if .Params.image }}
+        {{ $img := $.Page.Resources.GetMatch .Params.Image }}
+        <div class="page-image">
+          {{ if $img }}
+          <img class="lazy" data-src="{{ $img.RelPermalink }}" alt="{{ .Title }}">
+          {{ else }}
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+          {{ end }}
+        </div>
+        {{ end }}
+        {{ end }}
+
+        <div class="page-info">
+          <h1 class="page-title">{{ .Title }}</h1>
+        </div>
+
+      </div>
+
+      <article class="page">
+        <div class="page__content">
+          {{ if .Params.toc }}
+          <div class="page__toc">
+            <h2 class="page__toc__title">Table of Contents</h2>
+            {{ .TableOfContents }}
+          </div>
+          {{ end }}
+          {{ .Content }}
+        </div>
+      </article>
+    </div>
+
+    <div class="col col-4 col-d-12">
+      <aside class="sidebar">
+        {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+        {{ partial "sidebar-widgets/widget-social.html" . }}
+        {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+        {{ partial "sidebar-widgets/widget-tags.html" . }}
+      </aside>
+    </div>
+
+  </div>
+</div>
+<!-- end page -->
+
+{{ end }}
+
+{{ end }}

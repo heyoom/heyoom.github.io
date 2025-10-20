@@ -1,0 +1,119 @@
+<!-- begin footer -->
+<footer class="footer">
+
+  <div class="footer__inner">
+    <div class="container">
+      <div class="row">
+
+        <div class="col col-4 col-d-12">
+          <h3 class="footer__info__title">{{ .Site.Title }}</h3>
+          {{ if .Site.Params.footer.footer_description }}
+          <p class="footer__info__description">{{ .Site.Params.footer.footer_description }}</p>
+          {{ end }}
+          {{ if .Site.Params.social }}
+          {{ with .Site.Params.social }}
+          <div class="footer__social">
+            <ul class="footer__social__list list-reset">
+              {{ range . }}
+              <li class="footer__social__item">
+                <a class="footer__social__link" href="{{ .link }}" target="_blank" rel="noopener"
+                  aria-label="{{ .name }} link"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+          </div>
+          {{ end }}
+          {{ end }}
+        </div>
+
+        <div class="col col-4 col-d-12">
+          <h3 class="footer__title">최근 글</h3>
+          <div class="footer__recent-posts">
+            {{ $counter := 0 }}
+            {{ range ( where site.RegularPages "Section" "posts" | first 3 ) }}
+            {{ $counter = add $counter 1 }}
+            <div class="footer__recent-content">
+              {{ if .Params.Image }}
+              {{ $img := .Resources.GetMatch .Params.Image }}
+              <a href="{{ .RelPermalink }}" class="footer__recent-image">
+                {{ if .Params.video_embed }}
+                <div class="video-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <polygon points="40,30 70,50 40,70"></polygon>
+                  </svg>
+                </div>
+                {{ end }}
+                {{ if $img }}
+                <img class="lazy" data-src="{{ $img.RelPermalink }}" alt="{{ .Title }}">
+                {{ else }}
+                <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+                {{ end }}
+              </a>
+              {{ end }}
+              <div class="footer__recent-meta">
+                <h3 class="footer__recent-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <time class="footer__recent-date" datetime="{{ .Date.Format " 2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006년 01월 02일" }}</time>
+              </div>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+
+        {{ if .Site.Menus.main }}
+        <div class="col col-2 col-d-6 col-m-12">
+          <div class="footer-nav__left">
+            <h3 class="footer__title">메뉴</h3>
+            <div class="footer-nav__list">
+              {{ range.Site.Menus.main }}
+                {{ if .HasChildren }}
+                {{ else }}
+                  <a class="footer-nav__link" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                {{ end }}
+              {{ end }}
+            </div>
+          </div>
+        </div>
+        {{ end }}
+
+        {{ $hasSubmenu := false }}
+        {{ range .Site.Menus.main }}
+          {{ if .HasChildren }}
+            {{ $hasSubmenu = true }}
+          {{ end }}
+        {{ end }}
+
+        {{ if $hasSubmenu }}
+        <div class="col col-2 col-d-6 col-m-12">
+          <div class="footer-nav__right">
+            {{ range .Site.Menus.main }}
+              {{ if .HasChildren }}
+              <h3 class="footer__title">{{ .Name }}</h3>
+              <div class="footer-nav__list">
+                {{ range .Children }}
+                <a class="footer-nav__link" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                {{ end }}
+              </div>
+              {{ end }}
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__info">
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+          <div class="footer__info-box">
+            <div class="copyright">{{ dateFormat "2006" now }} &copy; <a href="/">{{ .Site.Title }}</a>. All Right Reserved. Published with <a href="https://gohugo.io/">Hugo</a>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</footer>
+<!-- end footer -->

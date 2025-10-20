@@ -140,11 +140,15 @@ print(result, end='')
     rm -f "$temp_file"
 
     # 이 포스트에서 사용된 이미지 파일 복사
-    grep -oh 'IMG-[0-9]*\.[a-z]*' "content/posts/$filename" 2>/dev/null | sort -u | while read img; do
+    # ![image](/images/image) 형식에서 이미지 파일명 추출
+    grep -oh '!\[[^]]*\](/images/[^)]*' "content/posts/$filename" 2>/dev/null | \
+      sed 's|!\[[^]]*\](/images/||' | \
+      sed 's|%20| |g' | \
+      sort -u | while read img; do
       # static/images에 이미 있으면 건너뛰기
       if [ ! -f "static/images/$img" ]; then
-        # vault에서 이미지 찾기
-        found=$(find -L "$VAULT_PATH" -name "$img" 2>/dev/null | head -1)
+        # vault의 assets 폴더에서 이미지 찾기
+        found=$(find -L obsidian-vault -name "$img" 2>/dev/null | head -1)
         if [ -n "$found" ]; then
           cp "$found" static/images/
         fi
@@ -156,14 +160,17 @@ done
 # 추가 이미지 복사 (혹시 놓친 것 처리)
 echo ""
 echo "📸 추가 이미지 확인 중..."
-grep -oh "IMG-[0-9]*\.[a-z]*" content/posts/*.md 2>/dev/null | sort -u | while read img; do
+grep -oh '!\[[^]]*\](/images/[^)]*' content/posts/*.md 2>/dev/null | \
+  sed 's|!\[[^]]*\](/images/||' | \
+  sed 's|%20| |g' | \
+  sort -u | while read img; do
   # static/images에 이미 있으면 건너뛰기
   if [ -f "static/images/$img" ]; then
     continue
   fi
 
-  # vault에서 이미지 찾기
-  found=$(find -L "$VAULT_PATH" -name "$img" 2>/dev/null | head -1)
+  # vault의 assets 폴더에서 이미지 찾기
+  found=$(find -L obsidian-vault -name "$img" 2>/dev/null | head -1)
   if [ -n "$found" ]; then
     cp "$found" static/images/
     echo "  ✓ $img"

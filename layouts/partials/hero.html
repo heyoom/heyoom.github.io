@@ -51,9 +51,10 @@
             </div>
             {{ end }}
 
-            {{ if .Site.Params.hero.hero_button_text }}
-            <a href="{{ .Site.Params.hero.hero_button_link }}" class="hero__button button button--primary">{{ .Site.Params.hero.hero_button_text }}</a>
-            {{ end }}
+            <div class="hero__buttons">
+              <a href="/about/" class="hero__button button button--primary">소개 보기</a>
+              <a href="/running-history/" class="hero__button button button--secondary">러닝 기록 보기</a>
+            </div>
           </div>
         </div>
 
@@ -64,6 +65,17 @@
 <!-- end hero -->
 
 <style>
+.button--secondary {
+  background: transparent;
+  border: 2px solid var(--brand-color);
+  color: var(--brand-color);
+}
+
+.button--secondary:hover {
+  background: var(--brand-color);
+  color: #fff;
+}
+
 .marathon-records {
   margin: 25px 0;
   padding: 20px;

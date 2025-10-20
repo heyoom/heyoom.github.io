@@ -27,8 +27,10 @@ find -L obsidian-vault -name "*.md" \
     # 파일명 추출
     filename=$(basename "$file")
 
-    # Wiki links 변환: [[title]] -> [title](/posts/title)
-    sed 's/\[\[\([^]]*\)\]\]/[\1](\/posts\/\1)/g' "$file" > "content/posts/$filename"
+    # Wiki links 변환 및 published 필드 제거
+    # - [[title]] -> [title](/posts/title)
+    # - published: true 라인 삭제 (Hugo가 날짜로 파싱하려고 하는 문제 방지)
+    sed -e 's/\[\[\([^]]*\)\]\]/[\1](\/posts\/\1)/g' -e '/^published:/d' "$file" > "content/posts/$filename"
   fi
 done
 

@@ -75,7 +75,7 @@ body = match.group(4)
 first_image = None
 image_match = re.search(r'!\[\[([^\]]+)\]\]', body)
 if image_match:
-    first_image = image_match.group(1)
+    first_image = image_match.group(1).split('/')[-1]  # 파일명만 추출
     first_image_encoded = urllib.parse.quote(first_image)
 
 # 본문에서 description 추출 (일반 텍스트만, 160자 제한)
@@ -107,8 +107,10 @@ if text_lines:
 # 이미지 링크 변환: ![[image.png]] -> ![image.png](/images/image.png)
 def encode_image(match):
     img = match.group(1)
-    encoded = urllib.parse.quote(img)
-    return f'![{img}](/images/{encoded})'
+    # 경로에서 파일명만 추출 (basename)
+    img_basename = img.split('/')[-1]
+    encoded = urllib.parse.quote(img_basename)
+    return f'![{img_basename}](/images/{encoded})'
 
 # 내부 링크 변환: [[title]] -> [title](/posts/title.md)
 def encode_link(match):
@@ -136,12 +138,24 @@ print(result, end='')
 " > "content/posts/$filename"
 
     rm -f "$temp_file"
+
+    # 이 포스트에서 사용된 이미지 파일 복사
+    grep -oh 'IMG-[0-9]*\.[a-z]*' "content/posts/$filename" 2>/dev/null | sort -u | while read img; do
+      # static/images에 이미 있으면 건너뛰기
+      if [ ! -f "static/images/$img" ]; then
+        # vault에서 이미지 찾기
+        found=$(find -L "$VAULT_PATH" -name "$img" 2>/dev/null | head -1)
+        if [ -n "$found" ]; then
+          cp "$found" static/images/
+        fi
+      fi
+    done
   fi
 done
 
-# 모든 포스트에서 사용된 이미지 파일 수집 및 복사
+# 추가 이미지 복사 (혹시 놓친 것 처리)
 echo ""
-echo "📸 이미지 복사 중..."
+echo "📸 추가 이미지 확인 중..."
 grep -oh "IMG-[0-9]*\.[a-z]*" content/posts/*.md 2>/dev/null | sort -u | while read img; do
   # static/images에 이미 있으면 건너뛰기
   if [ -f "static/images/$img" ]; then

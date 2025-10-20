@@ -59,7 +59,7 @@ disqusShortname = "moyoreon"
   hero_description = "코드를 짜고, 아스팔트를 달리며, 생각을 정리합니다. 기획과 개발, 그리고 삶의 균형을 찾아가는 여정을 기록합니다."
   hero_image = "/images/hero.png"
   hero_image_caption = "중요한 건 기록이지. 기록 없으면 무슨 재미로 달리나"
-  hero_button_text = "함께하기"
+  hero_button_text = "소개 보기"
   hero_button_link = "/about"
 
   # Marathon Personal Records

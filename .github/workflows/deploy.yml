@@ -152,7 +152,7 @@ if first_image and 'image:' not in frontmatter:
 # frontmatter에 description 필드 추가 (description 필드가 없으면)
 if description and 'description:' not in frontmatter:
     # 따옴표 이스케이프 처리
-    description_escaped = description.replace('\"', '\\\"')
+    description_escaped = description.replace('\"', '\\\\\"')
     frontmatter = frontmatter.rstrip() + f'\ndescription: \"{description_escaped}\"\n'
 
 # 재조합

@@ -1,0 +1,59 @@
+{{ define "main" }}
+
+<!-- begin archive-page -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+
+        <div class="archive-page">
+
+          <div class="archive-page__head">
+            {{ if .Title }}
+            <h1 class="archive-page__title">{{ .Title }}</h1>
+            {{ end }}
+            {{ if .Params.description }}
+            <div class="archive-page__description">{{ .Params.description }}</div>
+            {{ end }}
+          </div>
+
+          <div class="archive-page__inner">
+            {{ $posts := where site.RegularPages "Type" "in" site.Params.mainSections }}
+            {{ range $posts.GroupByPublishDate "2006" }}
+            <div class="archive-page__group">
+              <h2 class="archive-page__year">{{ .Key }} <sup>{{ len .Pages }}</sup></h2>
+              <div class="archive-page__list">
+                {{ $postsByMonth := .Pages.GroupByDate "January" }}
+                {{ range $postsByMonth }}
+                <h3 class="archive-page__month">{{ .Key }} <sup>{{ len .Pages }}</sup></h3>
+                <div class="archive-page__collection">
+                  {{ range .Pages }}
+                  <div class="archive-article">
+                    <h3 class="archive-article__title">
+                      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </h3>
+                    <div class="archive-article__meta">
+                      <time class="archive-article__date" datetime="{{ .Date | time }}">
+                        {{ .Date.Format "2006년 01월 02일" }}
+                      </time>
+                      <div class="archive-article__minutes">
+                        {{ .ReadingTime }}분 소요
+                      </div>
+                    </div>
+                  </div>
+                  {{ end }}
+                </div>
+                {{ end }}
+              </div>
+            </div>
+            {{ end }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end archive-page -->
+
+{{ end }}

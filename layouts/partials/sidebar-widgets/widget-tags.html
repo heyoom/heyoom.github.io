@@ -1,0 +1,23 @@
+{{ if gt (len .Site.Taxonomies.tags) 0 }}
+<div class="widget widget-tags">
+  <div class="widget-sidebar-head">
+    <h2 class="widget-sidebar-title">Topics</h2>
+  </div>
+
+  <div class="tag-cloud">
+    {{ $colors := slice "#FF6B6B" "#4ECDC4" "#45B7D1" "#FFA07A" "#98D8C8" "#F7DC6F" "#BB8FCE" "#85C1E2" "#F8B739" "#52B788" }}
+    {{ $.Scratch.Set "tagColorIndex" 0 }}
+    {{ range $tagName, $tagPages := .Site.Taxonomies.tags }}
+      {{ with $.Site.GetPage (printf "/tags/%s" $tagName | urlize) }}
+        {{ $currentIndex := $.Scratch.Get "tagColorIndex" }}
+        {{ $colorIndex := mod $currentIndex (len $colors) }}
+        {{ $color := index $colors $colorIndex }}
+        <a href="{{ .RelPermalink }}" class="tag-cloud__item" style="background: {{ $color }};">
+          {{ .Title }}
+        </a>
+        {{ $.Scratch.Set "tagColorIndex" (add $currentIndex 1) }}
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}

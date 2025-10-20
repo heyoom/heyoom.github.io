@@ -7,6 +7,7 @@ theme = "coderon"
 
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
+  mainSections = ["posts"]
 
 #-------------------------------
 # Color Scheme
@@ -33,14 +34,19 @@ theme = "coderon"
     weight = 3
 
   [[menu.main]]
+    name = "정보"
+    url = "/categories/정보/"
+    weight = 4
+
+  [[menu.main]]
     name = "보관함"
     url = "/archive/"
-    weight = 4
+    weight = 5
 
   [[menu.main]]
     identifier = "more"
     name = "더보기"
-    weight = 5
+    weight = 6
 
   [[menu.main]]
     name = "러닝 기록"

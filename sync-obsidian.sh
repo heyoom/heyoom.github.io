@@ -39,11 +39,17 @@ find -L obsidian-vault -name "*.md" \
       fi
       # 기존 frontmatter 복사 (published 제외)
       sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d' | grep -v "^published:"
-      # date 필드가 없으면 파일명에서 추출해서 추가
+      # date 필드가 없으면 추출해서 추가
       if ! grep -q "^date:" "$file"; then
-        # 파일명이 YYYY-MM-DD 형식인 경우 날짜 추출
+        # 1) 파일명이 YYYY-MM-DD 형식인 경우
         if [[ "$title" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
           echo "date: $title"
+        # 2) created 필드에서 날짜 추출 (YYYY-MM-DD 또는 YYYY. MM. DD 형식)
+        elif grep -q "^created:" "$file"; then
+          created_date=$(grep "^created:" "$file" | sed 's/created: *//' | sed 's/[. ]\+/-/g' | cut -d' ' -f1 | cut -d'-' -f1-3)
+          if [[ "$created_date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "date: $created_date"
+          fi
         fi
       fi
       echo "---"

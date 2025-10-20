@@ -52,33 +52,106 @@
 .article__taxonomy {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 15px;
 }
 
 .article__categories,
 .article__tags {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-bottom: 12px;
+}
+
+.article__tag {
+  display: inline-block;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.article__tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
 }
 
 .article__category {
   display: inline-block;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--brand-color);
-  background: transparent;
-  border: 1.5px solid var(--brand-color);
-  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--primary-color);
+  border-radius: 5px;
   text-decoration: none;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .article__category:hover {
-  background: var(--brand-color);
+  background: var(--gradient-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Post Info (Categories + Tags in Single Post Page) */
+.post-taxonomy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.post-categories,
+.post-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.post-category {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--primary-color);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.post-category:hover {
+  background: var(--gradient-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.post-tag {
+  display: inline-block;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
   color: #fff;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
 }
 
 /* Heading Spacing */

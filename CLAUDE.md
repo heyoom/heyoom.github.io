@@ -27,7 +27,7 @@
 
 ```
 moyorun/
-├── obsidian-vault/              # → Danny_iCloud (심볼릭 링크)
+├── obsidian-vault/              # → /Users/heyoom/Documents/obsidian (심볼릭 링크)
 │   └── *.md                     # publish: true인 파일만 발행
 ├── content/
 │   ├── *.md                     # [자동 생성] 독립 페이지 (type: page)

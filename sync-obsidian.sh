@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Obsidian → Hugo 변환 스크립트 (published: true만)
+# Obsidian → Hugo 변환 스크립트 (publish: true만)
 # 사용법:
 #   ./sync-obsidian.sh          # 증분 sync (변경된 파일만)
 #   ./sync-obsidian.sh --full   # 전체 재생성
@@ -35,7 +35,7 @@ convert_file() {
   filename=$(basename "$source_file")
   title=$(basename "$source_file" .md)
 
-  # Wiki links 변환, published 필드 제거, title/date 추가
+  # Wiki links 변환, publish 필드 제거, title/date 추가
   temp_file="/tmp/hugo_convert_$$.md"
   {
     # frontmatter 시작
@@ -49,8 +49,8 @@ convert_file() {
       echo "title: $title_value"
     fi
 
-    # 기존 frontmatter 복사 (published, title 제외)
-    sed -n '/^---$/,/^---$/p' "$source_file" | sed '1d;$d' | grep -v "^published:" | grep -v "^title:"
+    # 기존 frontmatter 복사 (publish, title 제외)
+    sed -n '/^---$/,/^---$/p' "$source_file" | sed '1d;$d' | grep -v "^publish:" | grep -v "^title:"
     # date 필드가 없으면 추출해서 추가
     if ! grep -q "^date:" "$source_file"; then
       # 1) 파일명이 YYYY-MM-DD 형식인 경우
@@ -188,7 +188,7 @@ full_sync() {
   # static/images 폴더 생성
   mkdir -p static/images
 
-  # vault 전체에서 published: true인 .md 파일 찾기
+  # vault 전체에서 publish: true인 .md 파일 찾기
   find -L obsidian-vault -name "*.md" \
     -not -path "*/\.obsidian/*" \
     -not -path "*/\.trash/*" \
@@ -198,8 +198,8 @@ full_sync() {
     -not -path "*/\.assets/*" \
     2>/dev/null \
     | while read file; do
-    # frontmatter에서 published: true 확인
-    if grep -qE "^published: (true|\"true\")" "$file"; then
+    # frontmatter에서 publish: true 확인
+    if grep -qE "^publish: (true|\"true\")" "$file"; then
       filename=$(basename "$file")
 
       # type 필드 확인하여 출력 경로 결정
@@ -236,10 +236,10 @@ incremental_sync() {
   # content/의 .md 파일 (type: page)
   find content -maxdepth 1 -name "*.md" >> "$existing_files_list" 2>/dev/null
 
-  # vault에서 published: true인 파일 처리
+  # vault에서 publish: true인 파일 처리
   while IFS= read -r source_file; do
-    # frontmatter에서 published: true 확인
-    if grep -qE "^published: (true|\"true\")" "$source_file"; then
+    # frontmatter에서 publish: true 확인
+    if grep -qE "^publish: (true|\"true\")" "$source_file"; then
       filename=$(basename "$source_file")
 
       # type 필드 확인하여 출력 경로 결정

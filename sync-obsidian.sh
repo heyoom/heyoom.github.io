@@ -49,8 +49,8 @@ convert_file() {
       echo "title: $title_value"
     fi
 
-    # 기존 frontmatter 복사 (publish, title 제외)
-    sed -n '/^---$/,/^---$/p' "$source_file" | sed '1d;$d' | grep -v "^publish:" | grep -v "^title:"
+    # 기존 frontmatter 복사 (publish, published, title 제외)
+    sed -n '/^---$/,/^---$/p' "$source_file" | sed '1d;$d' | grep -v "^publish:" | grep -v "^published:" | grep -v "^title:"
     # date 필드가 없으면 추출해서 추가
     if ! grep -q "^date:" "$source_file"; then
       # 1) 파일명이 YYYY-MM-DD 형식인 경우

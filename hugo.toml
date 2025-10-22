@@ -83,17 +83,17 @@ theme = "coderon"
   [[params.hero.marathon_records]]
     distance = "10K"
     time = "00:45:56"
-    event = "'24.11.17 부천 복사골 마라톤"
+    event = "'24.11.17 부천 복사골마라톤"
 
   [[params.hero.marathon_records]]
     distance = "Half"
     time = "01:40:55"
-    event = "'25.09.28 인천 송도 국제마라톤"
+    event = "'25.09.28 인천 송도국제마라톤"
 
   [[params.hero.marathon_records]]
     distance = "Full"
     time = "03:48:59"
-    event = "'25.04.20 경기 마라톤"
+    event = "'25.04.20 경기마라톤"
 
 #-------------------------------
 # Blog Section
@@ -145,6 +145,16 @@ theme = "coderon"
   icon = "fa-solid fa-globe"
   name = "Website"
   link = "https://minorlab.com"
+
+[[params.social]]
+  icon = "fa-brands fa-strava"
+  name = "Strava"
+  link = "https://www.strava.com/athletes/94694989"
+
+[[params.social]]
+  icon = "fa-solid fa-chart-line"
+  name = "Runalyze"
+  link = "https://runalyze.com/athlete/heyoom"
 
 #-------------------------------
 # Taxonomies

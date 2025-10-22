@@ -336,9 +336,10 @@ if [ "$PUSH_TO_GIT" = true ]; then
   echo "🚀 Git push 시작..."
   echo ""
 
-  # 변경사항 확인
-  if git diff --quiet content/ static/images/ 2>/dev/null && \
-     git diff --cached --quiet content/ static/images/ 2>/dev/null; then
+  # 변경사항 확인 (untracked 파일 포함)
+  changes=$(git status --porcelain content/ static/images/ 2>/dev/null | wc -l | tr -d ' ')
+
+  if [ "$changes" -eq 0 ]; then
     echo "ℹ️  변경사항 없음, push 건너뜀"
   else
     # 변경된 파일 개수 확인

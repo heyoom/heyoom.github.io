@@ -4,10 +4,20 @@ baseURL = "https://moyorun.com/"
 languageCode = "ko-kr"
 title = "모요런"
 theme = "coderon"
+enableRobotsTXT = true
+enableEmoji = true
 
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
   mainSections = ["posts"]
+  author = "모요!"
+  keywords = ["러닝", "마라톤", "개발", "기획자", "블로그", "40대", "풀마라톤", "하프마라톤"]
+
+# SEO 설정
+[sitemap]
+  changefreq = "weekly"
+  filename = "sitemap.xml"
+  priority = 0.5
 
 #-------------------------------
 # Color Scheme

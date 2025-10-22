@@ -6,6 +6,7 @@ title = "모요런"
 theme = "coderon"
 enableRobotsTXT = true
 enableEmoji = true
+googleAnalytics = "G-VKXN3PNDC0"
 
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"

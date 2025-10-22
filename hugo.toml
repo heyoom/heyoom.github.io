@@ -11,7 +11,6 @@ googleAnalytics = "G-VKXN3PNDC0"
 [params]
   description = "코드와 러닝 사이, 40대 기획&개발자의 생각 저장소"
   mainSections = ["posts"]
-  author = "모요!"
   keywords = ["러닝", "마라톤", "개발", "기획자", "블로그", "40대", "풀마라톤", "하프마라톤"]
 
 # SEO 설정

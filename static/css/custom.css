@@ -209,3 +209,17 @@
     padding: 3px 10px;
   }
 }
+
+/* Font Family (Pretendard for Korean fallback) */
+body {
+  font-family: 'Roboto Mono', "Pretendard Variable", Pretendard, "Courier New", "Lucida Console", Monaco, monospace, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', "Pretendard Variable", Pretendard, Helvetica Neue, Helvetica, Arial, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+/* Keep monospace for code */
+code, pre, .marathon-record__time {
+  font-family: 'Roboto Mono', "Pretendard Variable", Pretendard, 'Courier New', monospace;
+}

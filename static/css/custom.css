@@ -210,6 +210,15 @@
   }
 }
 
+/* Comments Spacing */
+.post__comments {
+  margin-top: 32px;
+}
+
+.post__comments-title {
+  margin-bottom: 16px;
+}
+
 /* Font Family (Pretendard for Korean fallback) */
 body {
   font-family: 'Roboto Mono', "Pretendard Variable", Pretendard, "Courier New", "Lucida Console", Monaco, monospace, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;

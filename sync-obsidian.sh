@@ -160,14 +160,15 @@ print(result, end='')
   # 이 포스트에서 사용된 이미지 파일 복사
   grep -oh '!\[[^]]*\](/images/[^)]*' "$output_path" 2>/dev/null | \
     sed 's|!\[[^]]*\](/images/||' | \
-    sed 's|%20| |g' | \
-    sort -u | while read img; do
+    sort -u | while read encoded_img; do
+    # Python으로 URL decode (한글, 특수문자 포함)
+    img=$(python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$encoded_img")
     # static/images에 이미 있으면 건너뛰기
     if [ ! -f "static/images/$img" ]; then
       # vault의 assets 폴더에서 이미지 찾기
       found=$(find -L obsidian-vault -name "$img" 2>/dev/null | head -1)
       if [ -n "$found" ]; then
-        cp "$found" static/images/
+        cp "$found" "static/images/"
       fi
     fi
   done
@@ -304,8 +305,9 @@ echo ""
 echo "📸 추가 이미지 확인 중..."
 grep -oh '!\[[^]]*\](/images/[^)]*' content/posts/*.md content/*.md 2>/dev/null | \
   sed 's|!\[[^]]*\](/images/||' | \
-  sed 's|%20| |g' | \
-  sort -u | while read img; do
+  sort -u | while read encoded_img; do
+  # Python으로 URL decode (한글, 특수문자 포함)
+  img=$(python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$encoded_img")
   # static/images에 이미 있으면 건너뛰기
   if [ -f "static/images/$img" ]; then
     continue
@@ -314,7 +316,7 @@ grep -oh '!\[[^]]*\](/images/[^)]*' content/posts/*.md content/*.md 2>/dev/null 
   # vault의 assets 폴더에서 이미지 찾기
   found=$(find -L obsidian-vault -name "$img" 2>/dev/null | head -1)
   if [ -n "$found" ]; then
-    cp "$found" static/images/
+    cp "$found" "static/images/"
     echo "  ✓ $img"
   else
     echo "  ✗ $img (not found)"

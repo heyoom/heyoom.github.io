@@ -91,9 +91,20 @@ body = match.group(4)
 
 # 본문에서 첫 번째 이미지 찾기
 first_image = None
+# Obsidian 형식 먼저 확인
 image_match = re.search(r'!\[\[([^\]]+)\]\]', body)
 if image_match:
     first_image = image_match.group(1).split('/')[-1]  # 파일명만 추출
+else:
+    # Markdown 표준 형식 확인
+    image_match = re.search(r'!\[([^\]]*)\]\(([^)]+)\)', body)
+    if image_match:
+        img_path = image_match.group(2)
+        # http로 시작하는 외부 이미지는 제외
+        if not img_path.startswith('http'):
+            first_image = img_path.split('/')[-1]  # 파일명만 추출
+
+if first_image:
     first_image_encoded = urllib.parse.quote(first_image)
 
 # 본문에서 description 추출 (일반 텍스트만, 160자 제한)
@@ -130,6 +141,20 @@ def encode_image(match):
     encoded = urllib.parse.quote(img_basename)
     return f'![{img_basename}](/images/{encoded})'
 
+# Markdown 표준 이미지 변환: ![alt](image.png) -> ![alt](/images/image.png)
+def encode_markdown_image(match):
+    alt_text = match.group(1)
+    img_path = match.group(2)
+
+    # 이미 /images/로 시작하거나 http로 시작하면 변환 안함
+    if img_path.startswith('/images/') or img_path.startswith('http'):
+        return match.group(0)
+
+    # assets/ 경로나 상대경로에서 파일명만 추출
+    img_basename = img_path.split('/')[-1]
+    encoded = urllib.parse.quote(img_basename)
+    return f'![{alt_text}](/images/{encoded})'
+
 # 내부 링크 변환: [[title]] -> [title](/posts/title.md)
 def encode_link(match):
     title = match.group(1)
@@ -137,11 +162,16 @@ def encode_link(match):
     slug = title.lower().replace(' ', '-')
     return f'[{title}](/posts/{slug})'
 
+# Obsidian 이미지 형식 변환
 body = re.sub(r'!\[\[([^\]]+)\]\]', encode_image, body)
+# Markdown 표준 이미지 형식 변환
+body = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', encode_markdown_image, body)
+# 내부 링크 변환
 body = re.sub(r'\[\[([^\]]+)\]\]', encode_link, body)
 
 # frontmatter에 image 필드 추가 (첫 번째 이미지가 있고, image 필드가 없으면)
 if first_image and 'image:' not in frontmatter:
+    first_image_encoded = urllib.parse.quote(first_image)
     frontmatter = frontmatter.rstrip() + f'\nimage: /images/{first_image_encoded}\n'
 
 # frontmatter에 description 필드 추가 (description 필드가 없으면)

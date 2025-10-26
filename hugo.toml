@@ -92,8 +92,8 @@ googleAnalytics = "G-VKXN3PNDC0"
   # Marathon Personal Records
   [[params.hero.marathon_records]]
     distance = "10K"
-    time = "00:45:56"
-    event = "'24.11.17 부천 복사골마라톤"
+    time = "00:45:19"
+    event = "'25.10.26 부천마라톤"
 
   [[params.hero.marathon_records]]
     distance = "Half"

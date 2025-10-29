@@ -232,3 +232,9 @@ h1, h2, h3, h4, h5, h6 {
 code, pre, .marathon-record__time {
   font-family: 'Roboto Mono', "Pretendard Variable", Pretendard, 'Courier New', monospace;
 }
+
+/* Hero Image - Round Rectangle */
+.hero__image img {
+  border-radius: 20px;
+  overflow: hidden;
+}

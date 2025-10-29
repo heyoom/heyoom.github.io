@@ -233,8 +233,7 @@ code, pre, .marathon-record__time {
   font-family: 'Roboto Mono', "Pretendard Variable", Pretendard, 'Courier New', monospace;
 }
 
-/* Hero Image - Round Rectangle */
-.hero__image img {
+/* Hero Avatar - Round Rectangle (Moyo Character) */
+.hero__avatar img {
   border-radius: 20px;
-  overflow: hidden;
 }

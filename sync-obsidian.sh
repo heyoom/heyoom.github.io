@@ -140,13 +140,53 @@ for line in body.split('\n'):
 if text_lines:
     description = ' '.join(text_lines)[:160]
 
-# 이미지 링크 변환: ![[image.png]] -> ![image.png](/images/image.png)
-def encode_image(match):
-    img = match.group(1)
-    # 경로에서 파일명만 추출 (basename)
-    img_basename = img.split('/')[-1]
-    encoded = urllib.parse.quote(img_basename)
-    return f'![{img_basename}](/images/{encoded})'
+# 연속된 2개 이상의 이미지를 gallery로 변환
+lines = body.split('\n')
+result_lines = []
+i = 0
+while i < len(lines):
+    line = lines[i].strip()
+
+    # 현재 줄이 Obsidian 이미지 형식인지 확인
+    if re.match(r'!\[\[([^\]]+)\]\]$', line):
+        # 연속된 이미지 모으기 (빈 줄 건너뛰기)
+        images = [line]
+        next_i = i + 1
+
+        while next_i < len(lines):
+            if lines[next_i].strip() == '':
+                next_i += 1
+                continue
+            if re.match(r'!\[\[([^\]]+)\]\]$', lines[next_i].strip()):
+                images.append(lines[next_i].strip())
+                next_i += 1
+            else:
+                break
+
+        # 2개 이상이면 gallery로 변환
+        if len(images) >= 2:
+            result_lines.append('')
+            result_lines.append('{{< gallery columns=\"2\" >}}')
+
+            for img_line in images:
+                img = re.match(r'!\[\[([^\]]+)\]\]', img_line).group(1).split('/')[-1]
+                img_encoded = urllib.parse.quote(img)
+                result_lines.append(f'  {{{{< img src=\"/images/{img_encoded}\" >}}}}')
+
+            result_lines.append('{{< /gallery >}}')
+            result_lines.append('')
+            i = next_i
+        else:
+            # 단일 이미지 → 일반 변환
+            img = re.match(r'!\[\[([^\]]+)\]\]', line).group(1).split('/')[-1]
+            img_encoded = urllib.parse.quote(img)
+            result_lines.append(f'![{img}](/images/{img_encoded})')
+            i += 1
+    else:
+        result_lines.append(lines[i])
+        i += 1
+
+body = '\n'.join(result_lines)
 
 # Markdown 표준 이미지 변환: ![alt](image.png) -> ![alt](/images/image.png)
 def encode_markdown_image(match):
@@ -169,8 +209,6 @@ def encode_link(match):
     slug = title.lower().replace(' ', '-')
     return f'[{title}](/posts/{slug})'
 
-# Obsidian 이미지 형식 변환
-body = re.sub(r'!\[\[([^\]]+)\]\]', encode_image, body)
 # Markdown 표준 이미지 형식 변환
 body = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', encode_markdown_image, body)
 # 내부 링크 변환

@@ -2,14 +2,18 @@
 
 # Obsidian → Hugo 변환 스크립트 (publish: true만)
 # 사용법:
-#   ./sync-obsidian.sh          # 증분 sync (변경된 파일만)
-#   ./sync-obsidian.sh --full   # 전체 재생성
-#   ./sync-obsidian.sh --push   # sync + git push
-#   ./sync-obsidian.sh --full --push  # 전체 sync + git push
+#   ./sync-obsidian.sh                      # 증분 sync (변경된 파일만)
+#   ./sync-obsidian.sh --full               # 전체 재생성
+#   ./sync-obsidian.sh --clean-images       # 증분 sync + unused 이미지 정리
+#   ./sync-obsidian.sh --full --clean-images # 전체 sync + unused 이미지 정리
+#   ./sync-obsidian.sh --push               # sync + git push
+#   ./sync-obsidian.sh --full --push        # 전체 sync + git push
+#   ./sync-obsidian.sh --clean-images --push # sync + 이미지 정리 + git push
 
 # 옵션 파싱
 FULL_SYNC=false
 PUSH_TO_GIT=false
+CLEAN_IMAGES=false
 
 for arg in "$@"; do
   case $arg in
@@ -19,9 +23,12 @@ for arg in "$@"; do
     --push)
       PUSH_TO_GIT=true
       ;;
+    --clean-images)
+      CLEAN_IMAGES=true
+      ;;
     *)
       echo "Unknown option: $arg"
-      echo "Usage: $0 [--full] [--push]"
+      echo "Usage: $0 [--full] [--push] [--clean-images]"
       exit 1
       ;;
   esac
@@ -209,6 +216,9 @@ full_sync() {
   echo "🔄 전체 동기화 시작..."
   echo ""
 
+  # 중복 파일명 체크
+  check_duplicate_filenames
+
   # content/posts 폴더 초기화
   rm -rf content/posts
   mkdir -p content/posts
@@ -247,10 +257,73 @@ full_sync() {
   done
 }
 
+# 중복 파일명 감지 함수
+check_duplicate_filenames() {
+  echo "🔍 중복 파일명 확인 중..."
+
+  duplicates_found=false
+  seen_files="/tmp/sync_seen_files_$$.txt"
+  > "$seen_files"
+
+  find -L obsidian-vault -name "*.md" \
+    -not -path "*/\.obsidian/*" \
+    -not -path "*/\.trash/*" \
+    -not -path "*/\.smtcmp*/*" \
+    -not -path "*/\.tmp*/*" \
+    -not -path "*/\.space/*" \
+    -not -path "*/\.assets/*" \
+    2>/dev/null \
+    | while read file; do
+    if grep -qE "^publish: (true|\"true\")" "$file"; then
+      filename=$(basename "$file")
+
+      # 이미 본 파일명인지 확인
+      if grep -qxF "$filename" "$seen_files"; then
+        if [ "$duplicates_found" = false ]; then
+          echo ""
+          echo "⚠️  경고: publish: true인 중복 파일명 발견!"
+          echo ""
+        fi
+        echo "  ❌ $filename"
+        echo "     - $file"
+        # 이전에 발견된 파일도 출력
+        prev_file=$(find -L obsidian-vault -name "$filename" \
+          -not -path "*/\.obsidian/*" \
+          -not -path "*/\.trash/*" \
+          2>/dev/null | grep -v "^${file}$" | head -1)
+        if [ -n "$prev_file" ]; then
+          echo "     - $prev_file"
+        fi
+        echo ""
+        duplicates_found=true
+      else
+        echo "$filename" >> "$seen_files"
+      fi
+    fi
+  done
+
+  rm -f "$seen_files"
+
+  if [ "$duplicates_found" = true ]; then
+    echo "⚠️  중복 파일명은 나중에 처리된 것만 발행됩니다."
+    echo "⚠️  파일명을 다르게 변경하거나 하나만 publish: true로 설정하세요."
+    echo ""
+    return 1
+  else
+    echo "  ✓ 중복 없음"
+    echo ""
+  fi
+
+  return 0
+}
+
 # 증분 sync 함수
 incremental_sync() {
   echo "🔄 증분 동기화 시작..."
   echo ""
+
+  # 중복 파일명 체크
+  check_duplicate_filenames
 
   # 폴더 생성
   mkdir -p content/posts static/images
@@ -323,6 +396,88 @@ incremental_sync() {
   rm -f "$existing_files_list"
 }
 
+# Unused 이미지 정리 함수
+cleanup_unused_images() {
+  echo ""
+  echo "🧹 Unused 이미지 정리 시작..."
+  echo ""
+
+  # content/에서 사용 중인 이미지 목록 추출
+  used_images_list="/tmp/sync_used_images_$$.txt"
+  > "$used_images_list"
+
+  # content/posts/, content/*.md에서 이미지 참조 추출
+  if [ -d content/posts ] || [ -n "$(ls -A content/*.md 2>/dev/null)" ]; then
+    grep -roh '!\[[^]]*\](/images/[^)]*' content/ 2>/dev/null | \
+      sed 's|!\[[^]]*\](/images/||' | \
+      python3 -c "
+import sys
+import urllib.parse
+for line in sys.stdin:
+    decoded = urllib.parse.unquote(line.strip())
+    if decoded:
+        print(decoded)
+" | sort -u > "$used_images_list"
+  fi
+
+  # hugo.toml에서 참조되는 이미지 추가 (보호 대상)
+  if [ -f hugo.toml ]; then
+    grep -Eo '"/images/[^"]+' hugo.toml 2>/dev/null | \
+      sed 's|"/images/||' | \
+      python3 -c "
+import sys
+import urllib.parse
+for line in sys.stdin:
+    decoded = urllib.parse.unquote(line.strip())
+    if decoded:
+        print(decoded)
+" >> "$used_images_list"
+  fi
+
+  # 중복 제거
+  sort -u "$used_images_list" -o "$used_images_list"
+
+  # static/images/의 모든 이미지 목록
+  all_images_list="/tmp/sync_all_images_$$.txt"
+  > "$all_images_list"
+
+  if [ -d static/images ]; then
+    ls -1 static/images/ > "$all_images_list"
+  fi
+
+  # 미사용 이미지 찾기 (all - used)
+  unused_count=0
+  deleted_count=0
+
+  while IFS= read -r img_file; do
+    # 사용 목록에 없으면 삭제
+    if ! grep -qxF "$img_file" "$used_images_list"; then
+      unused_count=$((unused_count + 1))
+
+      # 실제 삭제
+      if [ -f "static/images/$img_file" ]; then
+        rm -f "static/images/$img_file"
+        deleted_count=$((deleted_count + 1))
+        echo "  🗑️  $img_file"
+      fi
+    fi
+  done < "$all_images_list"
+
+  # 임시 파일 삭제
+  rm -f "$used_images_list" "$all_images_list"
+
+  echo ""
+  if [ "$deleted_count" -gt 0 ]; then
+    echo "✅ $deleted_count 개의 unused 이미지 삭제 완료"
+  else
+    echo "ℹ️  삭제할 unused 이미지 없음"
+  fi
+
+  # 최종 통계
+  remaining_images=$(ls -1 static/images/ 2>/dev/null | wc -l | tr -d ' ')
+  echo "📸 남은 이미지: $remaining_images 개"
+}
+
 # 메인 로직
 if [ "$FULL_SYNC" = true ]; then
   full_sync
@@ -362,6 +517,12 @@ page_count=$(ls -1 content/*.md 2>/dev/null | wc -l)
 echo "  Posts: $post_count"
 echo "  Pages: $page_count"
 echo ""
+
+# Unused 이미지 정리 (--clean-images 옵션)
+if [ "$CLEAN_IMAGES" = true ]; then
+  cleanup_unused_images
+  echo ""
+fi
 
 # Git push 처리
 if [ "$PUSH_TO_GIT" = true ]; then

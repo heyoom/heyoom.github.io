@@ -221,7 +221,7 @@
 
 /* Font Family (Pretendard for Korean fallback) */
 body {
-  font-family: 'Roboto Mono', "Courier New", "Lucida Console", Monaco, monospace, "Pretendard Variable", Pretendard;
+  font-family: 'Roboto Mono', "Courier New", "Lucida Console", Monaco, "Pretendard Variable", Pretendard;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -230,7 +230,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Keep monospace for code */
 code, pre, .marathon-record__time {
-  font-family: 'Roboto Mono', 'Courier New', monospace, "Pretendard Variable", Pretendard;
+  font-family: 'Roboto Mono', 'Courier New', "Pretendard Variable", Pretendard;
 }
 
 /* Hero Avatar - Round Rectangle (Moyo Character) */

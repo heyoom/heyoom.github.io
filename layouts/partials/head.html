@@ -117,6 +117,9 @@
   <style>{{ .Content | safeCSS }}</style>
   {{ end }}
 
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
+
   <!-- Google Analytics -->
   {{ with site.Config.Services.GoogleAnalytics.ID }}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>

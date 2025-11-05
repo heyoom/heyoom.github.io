@@ -1,0 +1,176 @@
+{{ if .Site.Params.hero.upcoming_races }}
+<div class="widget widget-upcoming-races">
+  <div class="widget-sidebar-head">
+    <h2 class="widget-sidebar-title">🏃 다음 대회</h2>
+  </div>
+  <div class="upcoming-races-list">
+    {{ range .Site.Params.hero.upcoming_races }}
+    {{ $date := time .date }}
+    {{ $now := now }}
+    {{ $daysUntil := div (sub $date.Unix $now.Unix) 86400 }}
+    <div class="upcoming-race">
+      <div class="upcoming-race__date-box">
+        <div class="upcoming-race__year">'{{ dateFormat "06" .date }}</div>
+        <div class="upcoming-race__date-right">
+          <div class="upcoming-race__month">{{ dateFormat "1월" .date }}</div>
+          <div class="upcoming-race__day">{{ dateFormat "2" .date }}</div>
+        </div>
+      </div>
+      <div class="upcoming-race__info">
+        <div class="upcoming-race__event">{{ .event }}</div>
+        <div class="upcoming-race__distance">{{ .distance }}코스</div>
+      </div>
+      <div class="upcoming-race__countdown">D-{{ $daysUntil }}</div>
+    </div>
+    {{ end }}
+  </div>
+</div>
+
+<style>
+.widget-upcoming-races {
+  margin-bottom: 30px;
+}
+
+.upcoming-races-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.upcoming-race {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.upcoming-race::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--brand-color) 0%, rgba(255, 83, 112, 0.5) 100%);
+}
+
+.upcoming-race:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.upcoming-race__date-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 75px;
+  padding: 10px;
+  background: var(--brand-color);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.upcoming-race__year {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Courier New', monospace;
+}
+
+.upcoming-race__date-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.upcoming-race__month {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+}
+
+.upcoming-race__day {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  font-family: 'Courier New', monospace;
+}
+
+.upcoming-race__countdown {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand-color);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.upcoming-race__info {
+  flex: 1;
+}
+
+.upcoming-race__event {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--heading-font-color);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.upcoming-race__distance {
+  font-size: 13px;
+  color: var(--text-color);
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+  .upcoming-race {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .upcoming-race__date-box {
+    min-width: 65px;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .upcoming-race__year {
+    font-size: 12px;
+  }
+
+  .upcoming-race__day {
+    font-size: 20px;
+  }
+
+  .upcoming-race__event {
+    font-size: 14px;
+  }
+
+  .upcoming-race__distance {
+    font-size: 12px;
+  }
+
+  .upcoming-race__countdown {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}
+</style>
+{{ end }}

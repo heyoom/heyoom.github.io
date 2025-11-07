@@ -5,10 +5,7 @@
   </div>
   <div class="upcoming-races-list">
     {{ range .Site.Params.hero.upcoming_races }}
-    {{ $date := time .date }}
-    {{ $now := now }}
-    {{ $daysUntil := div (sub $date.Unix $now.Unix) 86400 }}
-    <div class="upcoming-race">
+    <div class="upcoming-race" data-race-date="{{ .date }}">
       <div class="upcoming-race__date-box">
         <div class="upcoming-race__year">'{{ dateFormat "06" .date }}</div>
         <div class="upcoming-race__date-right">
@@ -20,7 +17,7 @@
         <div class="upcoming-race__event">{{ .event }}</div>
         <div class="upcoming-race__distance">{{ .distance }}코스</div>
       </div>
-      <div class="upcoming-race__countdown">D-{{ $daysUntil }}</div>
+      <div class="upcoming-race__countdown"></div>
     </div>
     {{ end }}
   </div>
@@ -173,4 +170,35 @@
   }
 }
 </style>
+
+<script>
+(function() {
+  function updateCountdowns() {
+    const races = document.querySelectorAll('.upcoming-race');
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // 오늘 자정
+
+    races.forEach(race => {
+      const dateStr = race.getAttribute('data-race-date');
+      const raceDate = new Date(dateStr);
+      raceDate.setHours(0, 0, 0, 0);
+
+      const diffTime = raceDate - now;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const countdownEl = race.querySelector('.upcoming-race__countdown');
+      if (countdownEl) {
+        countdownEl.textContent = `D-${diffDays}`;
+      }
+    });
+  }
+
+  // 페이지 로드시 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateCountdowns);
+  } else {
+    updateCountdowns();
+  }
+})();
+</script>
 {{ end }}

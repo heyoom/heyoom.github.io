@@ -149,14 +149,13 @@ while i < len(lines):
 
     # 현재 줄이 Obsidian 이미지 형식인지 확인
     if re.match(r'!\[\[([^\]]+)\]\]$', line):
-        # 연속된 이미지 모으기 (빈 줄 건너뛰기)
+        # 연속된 이미지 모으기 (빈 줄 없이 연속된 경우만)
         images = [line]
         next_i = i + 1
 
         while next_i < len(lines):
             if lines[next_i].strip() == '':
-                next_i += 1
-                continue
+                break  # 빈 줄을 만나면 중단 (gallery 변환 안 함)
             if re.match(r'!\[\[([^\]]+)\]\]$', lines[next_i].strip()):
                 images.append(lines[next_i].strip())
                 next_i += 1
@@ -233,9 +232,12 @@ print(result, end='')
   rm -f "$temp_file"
 
   # 이 포스트에서 사용된 이미지 파일 복사
-  grep -oh '!\[[^]]*\](/images/[^)]*' "$output_path" 2>/dev/null | \
-    sed 's|!\[[^]]*\](/images/||' | \
-    sort -u | while read encoded_img; do
+  {
+    # Markdown 이미지: ![alt](/images/filename)
+    grep -oh '!\[[^]]*\](/images/[^)]*' "$output_path" 2>/dev/null | sed 's|!\[[^]]*\](/images/||'
+    # Hugo shortcode: {{< img src="/images/filename" >}}
+    grep -oh 'src="/images/[^"]*"' "$output_path" 2>/dev/null | sed 's|src="/images/||; s|"$||'
+  } | sort -u | while read encoded_img; do
     # Python으로 URL decode (한글, 특수문자 포함)
     img=$(python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$encoded_img")
     # static/images에 이미 있으면 건너뛰기
@@ -446,9 +448,12 @@ cleanup_unused_images() {
 
   # content/posts/, content/*.md에서 이미지 참조 추출
   if [ -d content/posts ] || [ -n "$(ls -A content/*.md 2>/dev/null)" ]; then
-    grep -roh '!\[[^]]*\](/images/[^)]*' content/ 2>/dev/null | \
-      sed 's|!\[[^]]*\](/images/||' | \
-      python3 -c "
+    {
+      # Markdown 이미지: ![alt](/images/filename)
+      grep -roh '!\[[^]]*\](/images/[^)]*' content/ 2>/dev/null | sed 's|!\[[^]]*\](/images/||'
+      # Hugo shortcode: {{< img src="/images/filename" >}}
+      grep -roh 'src="/images/[^"]*"' content/ 2>/dev/null | sed 's|src="/images/||; s|"$||'
+    } | python3 -c "
 import sys
 import urllib.parse
 for line in sys.stdin:
@@ -526,9 +531,12 @@ fi
 # 추가 이미지 복사 (혹시 놓친 것 처리)
 echo ""
 echo "📸 추가 이미지 확인 중..."
-grep -oh '!\[[^]]*\](/images/[^)]*' content/posts/*.md content/*.md 2>/dev/null | \
-  sed 's|!\[[^]]*\](/images/||' | \
-  sort -u | while read encoded_img; do
+{
+  # Markdown 이미지: ![alt](/images/filename)
+  grep -oh '!\[[^]]*\](/images/[^)]*' content/posts/*.md content/*.md 2>/dev/null | sed 's|!\[[^]]*\](/images/||'
+  # Hugo shortcode: {{< img src="/images/filename" >}}
+  grep -oh 'src="/images/[^"]*"' content/posts/*.md content/*.md 2>/dev/null | sed 's|src="/images/||; s|"$||'
+} | sort -u | while read encoded_img; do
   # Python으로 URL decode (한글, 특수문자 포함)
   img=$(python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$encoded_img")
   # static/images에 이미 있으면 건너뛰기

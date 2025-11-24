@@ -102,15 +102,10 @@ googleAnalytics = "G-VKXN3PNDC0"
 
   [[params.hero.marathon_records]]
     distance = "Full"
-    time = "03:48:59"
-    event = "'25.04.20 경기마라톤"
+    time = "03:34:54"
+    event = "'25.11.23 인천마라톤"
 
   # Upcoming Races
-  [[params.hero.upcoming_races]]
-    date = "2025-11-23"
-    event = "인천마라톤"
-    distance = "풀"
-
   [[params.hero.upcoming_races]]
     date = "2026-03-15"
     event = "서울마라톤"

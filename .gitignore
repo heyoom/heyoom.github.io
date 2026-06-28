@@ -18,3 +18,8 @@ obsidian-vault/
 *.log
 /minorlab-tistory-backup
 /backup
+
+# Cloudflare
+cloudflare/**/.dev.vars
+cloudflare/**/.dev.vars.*
+cloudflare/**/.wrangler/

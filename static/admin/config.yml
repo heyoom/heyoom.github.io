@@ -2,10 +2,8 @@ backend:
   name: github
   repo: heyoom/heyoom.github.io
   branch: main
-  # GitHub Pages 정적 호스팅에서는 별도 OAuth provider가 필요하다.
-  # provider 확정 후 아래 두 값을 활성화한다.
-  # base_url: https://cms-oauth.example.com
-  # auth_endpoint: auth
+  base_url: https://moyorun-decap-oauth.delver.workers.dev
+  auth_endpoint: auth
   commit_messages:
     create: "Add: {{collection}} {{slug}}"
     update: "Update: {{collection}} {{slug}}"

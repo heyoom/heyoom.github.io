@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "moyorun-decap-oauth",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-28",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "vars": {
+    "CMS_URL": "https://moyorun.com/admin/",
+    "GITHUB_OAUTH_SCOPE": "repo"
+  }
+}

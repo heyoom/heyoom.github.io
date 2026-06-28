@@ -1,0 +1,64 @@
+{{ $isBookmark := eq .Section "bookmarks" }}
+{{ $sectionLabel := cond $isBookmark "북마크" "스크랩" }}
+{{ $externalURL := cond $isBookmark .Params.link_url .Params.source_url }}
+{{ $externalLabel := cond $isBookmark "링크 열기" "출처 열기" }}
+{{ $rawSourceType := "" }}
+{{ with .Params.source_type }}{{ $rawSourceType = . }}{{ end }}
+{{ $sourceType := "" }}
+{{ if eq $rawSourceType "youtube" }}
+  {{ $sourceType = "YouTube" }}
+{{ else if eq $rawSourceType "article" }}
+  {{ $sourceType = "글" }}
+{{ else if eq $rawSourceType "social" }}
+  {{ $sourceType = "소셜" }}
+{{ else if eq $rawSourceType "other" }}
+  {{ $sourceType = "기타" }}
+{{ end }}
+
+{{ $host := "" }}
+{{ with $externalURL }}
+  {{ $host = replaceRE "^https?://([^/?#]+).*$" "$1" . }}
+  {{ if eq $host . }}{{ $host = replaceRE "^([^/?#]+).*$" "$1" . }}{{ end }}
+  {{ $host = replaceRE "^www\\." "" $host }}
+{{ end }}
+
+{{ $isYouTube := false }}
+{{ $youtubeID := "" }}
+{{ if and $externalURL (or (eq $rawSourceType "youtube") (findRE "(youtube\\.com|youtu\\.be)" $externalURL)) }}
+  {{ $isYouTube = true }}
+  {{ if findRE "youtu\\.be/[^?&#/]+" $externalURL }}
+    {{ $youtubeID = replaceRE "^.*youtu\\.be/([^?&#/]+).*$" "$1" $externalURL }}
+  {{ else if findRE "/shorts/[^?&#/]+" $externalURL }}
+    {{ $youtubeID = replaceRE "^.*/shorts/([^?&#/]+).*$" "$1" $externalURL }}
+  {{ else if findRE "/embed/[^?&#/]+" $externalURL }}
+    {{ $youtubeID = replaceRE "^.*/embed/([^?&#/]+).*$" "$1" $externalURL }}
+  {{ else if findRE "[?&]v=[^?&#]+" $externalURL }}
+    {{ $youtubeID = replaceRE "^.*[?&]v=([^?&#]+).*$" "$1" $externalURL }}
+  {{ end }}
+{{ end }}
+{{ if and $isYouTube (not $sourceType) }}{{ $sourceType = "YouTube" }}{{ end }}
+
+{{ $thumbnail := "" }}
+{{ with .Params.thumbnail_url }}{{ $thumbnail = . }}{{ end }}
+{{ with .Params.image }}{{ if not $thumbnail }}{{ $thumbnail = . }}{{ end }}{{ end }}
+{{ if and (not $thumbnail) $youtubeID }}
+  {{ $thumbnail = printf "https://i.ytimg.com/vi/%s/hqdefault.jpg" $youtubeID }}
+{{ end }}
+
+{{ $description := "" }}
+{{ with .Description }}{{ $description = . }}{{ end }}
+{{ if not $description }}{{ $description = .Summary | plainify | truncate 160 }}{{ end }}
+
+{{ return (dict
+  "externalLabel" $externalLabel
+  "host" $host
+  "isBookmark" $isBookmark
+  "isYouTube" $isYouTube
+  "rawSourceType" $rawSourceType
+  "sectionLabel" $sectionLabel
+  "sourceType" $sourceType
+  "thumbnail" $thumbnail
+  "url" $externalURL
+  "description" $description
+  "youtubeID" $youtubeID
+) }}

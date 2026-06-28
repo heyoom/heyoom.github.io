@@ -1,26 +1,25 @@
-{{ $isBookmark := eq .Section "bookmarks" }}
-{{ $sectionLabel := cond $isBookmark "북마크" "스크랩" }}
-{{ $externalURL := cond $isBookmark .Params.link_url .Params.source_url }}
-{{ $externalLabel := cond $isBookmark "링크 열기" "출처 열기" }}
-{{ $sourceType := "" }}
-{{ with .Params.source_type }}{{ $sourceType = . }}{{ end }}
-{{ if eq $sourceType "youtube" }}
-  {{ $sourceType = "YouTube" }}
-{{ else if eq $sourceType "article" }}
-  {{ $sourceType = "글" }}
-{{ else if eq $sourceType "social" }}
-  {{ $sourceType = "소셜" }}
-{{ else if eq $sourceType "other" }}
-  {{ $sourceType = "기타" }}
-{{ end }}
-{{ $thumbnail := "" }}
-{{ with .Params.thumbnail_url }}{{ $thumbnail = . }}{{ end }}
-{{ with .Params.image }}{{ if not $thumbnail }}{{ $thumbnail = . }}{{ end }}{{ end }}
+{{ $preview := partial "collection-preview-data.html" . }}
+{{ $sectionLabel := index $preview "sectionLabel" }}
+{{ $externalURL := index $preview "url" }}
+{{ $externalLabel := index $preview "externalLabel" }}
+{{ $sourceType := index $preview "sourceType" }}
+{{ $host := index $preview "host" }}
+{{ $thumbnail := index $preview "thumbnail" }}
+{{ $isYouTube := index $preview "isYouTube" }}
+{{ $description := index $preview "description" }}
 
-<article class="collection-card collection-card--{{ .Section }}">
-  {{ if $thumbnail }}
-  <a class="collection-card__image" href="{{ .RelPermalink }}">
+<article class="collection-card collection-card--{{ .Section }}{{ if $thumbnail }} collection-card--with-preview{{ else }} collection-card--without-preview{{ end }}{{ if $isYouTube }} collection-card--youtube{{ end }}">
+  {{ if or $thumbnail $externalURL }}
+  <a class="collection-card__preview{{ if not $thumbnail }} collection-card__preview--empty{{ end }}" href="{{ with $externalURL }}{{ . }}{{ else }}{{ $.RelPermalink }}{{ end }}"{{ if $externalURL }} target="_blank" rel="noopener noreferrer"{{ end }} aria-label="{{ with $externalURL }}{{ $externalLabel }}{{ else }}{{ $.Title }} 보기{{ end }}">
+    {{ if $thumbnail }}
     <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
+    {{ if $isYouTube }}<span class="collection-preview__play" aria-hidden="true"></span>{{ end }}
+    {{ else }}
+    <span class="collection-card__preview-fallback">
+      <span>{{ with $sourceType }}{{ . }}{{ else }}LINK{{ end }}</span>
+      {{ with $host }}<strong>{{ . }}</strong>{{ end }}
+    </span>
+    {{ end }}
   </a>
   {{ end }}
 
@@ -28,6 +27,7 @@
     <div class="collection-card__meta">
       <span>{{ $sectionLabel }}</span>
       {{ if $sourceType }}<span>{{ $sourceType }}</span>{{ end }}
+      {{ if $host }}<span class="collection-card__host">{{ $host }}</span>{{ end }}
       <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006년 1월 2일" }}</time>
     </div>
 
@@ -35,10 +35,8 @@
       <a href="{{ .RelPermalink }}">{{ .Title }}</a>
     </h2>
 
-    {{ with .Description }}
+    {{ with $description }}
     <p class="collection-card__description">{{ . }}</p>
-    {{ else }}
-    <p class="collection-card__description">{{ .Summary | plainify | truncate 160 }}</p>
     {{ end }}
 
     {{ if .Params.tags }}
@@ -49,8 +47,11 @@
     </div>
     {{ end }}
 
-    {{ with $externalURL }}
-    <a class="collection-card__source" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $externalLabel }}</a>
-    {{ end }}
+    <div class="collection-card__actions">
+      <a class="collection-card__detail" href="{{ .RelPermalink }}">메모 보기</a>
+      {{ with $externalURL }}
+      <a class="collection-card__source" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $externalLabel }}</a>
+      {{ end }}
+    </div>
   </div>
 </article>

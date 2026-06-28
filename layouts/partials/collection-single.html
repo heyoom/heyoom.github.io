@@ -1,35 +1,21 @@
-{{ $isBookmark := eq .Section "bookmarks" }}
-{{ $sectionLabel := cond $isBookmark "북마크" "스크랩" }}
-{{ $externalURL := cond $isBookmark .Params.link_url .Params.source_url }}
-{{ $externalLabel := cond $isBookmark "링크 열기" "출처 열기" }}
-{{ $sourceType := "" }}
-{{ with .Params.source_type }}{{ $sourceType = . }}{{ end }}
-{{ if eq $sourceType "youtube" }}
-  {{ $sourceType = "YouTube" }}
-{{ else if eq $sourceType "article" }}
-  {{ $sourceType = "글" }}
-{{ else if eq $sourceType "social" }}
-  {{ $sourceType = "소셜" }}
-{{ else if eq $sourceType "other" }}
-  {{ $sourceType = "기타" }}
-{{ end }}
-{{ $thumbnail := "" }}
-{{ with .Params.thumbnail_url }}{{ $thumbnail = . }}{{ end }}
-{{ with .Params.image }}{{ if not $thumbnail }}{{ $thumbnail = . }}{{ end }}{{ end }}
+{{ $preview := partial "collection-preview-data.html" . }}
+{{ $sectionLabel := index $preview "sectionLabel" }}
+{{ $externalURL := index $preview "url" }}
+{{ $externalLabel := index $preview "externalLabel" }}
+{{ $sourceType := index $preview "sourceType" }}
+{{ $host := index $preview "host" }}
+{{ $thumbnail := index $preview "thumbnail" }}
+{{ $isYouTube := index $preview "isYouTube" }}
+{{ $description := index $preview "description" }}
 
 <div class="container">
   <div class="row">
     <div class="col col-8 col-d-12">
       <div class="collection-single__head">
-        {{ if $thumbnail }}
-        <div class="collection-single__image">
-          <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
-        </div>
-        {{ end }}
-
         <div class="collection-single__kicker">
           <span>{{ $sectionLabel }}</span>
           {{ if $sourceType }}<span>{{ $sourceType }}</span>{{ end }}
+          {{ if $host }}<span class="collection-single__host">{{ $host }}</span>{{ end }}
         </div>
 
         <h1 class="collection-single__title">{{ .Title }}</h1>
@@ -46,8 +32,32 @@
         </div>
         {{ end }}
 
-        {{ with $externalURL }}
-        <a class="collection-single__source" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $externalLabel }}</a>
+        {{ if $externalURL }}
+        <a class="collection-source-preview{{ if $thumbnail }} collection-source-preview--with-image{{ else }} collection-source-preview--without-image{{ end }}{{ if $isYouTube }} collection-source-preview--youtube{{ end }}" href="{{ $externalURL }}" target="_blank" rel="noopener noreferrer">
+          <span class="collection-source-preview__media">
+            {{ if $thumbnail }}
+            <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
+            {{ if $isYouTube }}<span class="collection-preview__play" aria-hidden="true"></span>{{ end }}
+            {{ else }}
+            <span class="collection-source-preview__fallback">
+              <span>{{ with $sourceType }}{{ . }}{{ else }}LINK{{ end }}</span>
+              {{ with $host }}<strong>{{ . }}</strong>{{ end }}
+            </span>
+            {{ end }}
+          </span>
+          <span class="collection-source-preview__body">
+            <span class="collection-source-preview__eyebrow">
+              {{ with $sourceType }}{{ . }}{{ else }}{{ $sectionLabel }}{{ end }}{{ with $host }} · {{ . }}{{ end }}
+            </span>
+            <strong class="collection-source-preview__title">{{ .Title }}</strong>
+            {{ with $description }}<span class="collection-source-preview__description">{{ . }}</span>{{ end }}
+            <span class="collection-source-preview__action">{{ $externalLabel }}</span>
+          </span>
+        </a>
+        {{ else if $thumbnail }}
+        <div class="collection-single__image">
+          <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
+        </div>
         {{ end }}
       </div>
 

@@ -77,6 +77,7 @@ collections:
       - { label: CMS 타입, name: content_type, widget: hidden, default: bookmark }
       - { label: 제목, name: title, widget: string }
       - { label: 링크, name: link_url, widget: string }
+      - { label: 프리뷰 이미지 URL, name: thumbnail_url, widget: string, required: false }
       - { label: 저장일, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - label: 태그
         name: tags
@@ -116,7 +117,7 @@ collections:
           - { label: YouTube, value: youtube }
           - { label: 소셜, value: social }
           - { label: 기타, value: other }
-      - { label: 썸네일 URL, name: thumbnail_url, widget: string, required: false }
+      - { label: 프리뷰 이미지 URL, name: thumbnail_url, widget: string, required: false }
       - { label: 저장일, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - label: 태그
         name: tags

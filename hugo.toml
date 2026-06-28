@@ -117,12 +117,6 @@ googleAnalytics = "G-VKXN3PNDC0"
     time = "03:34:54"
     event = "'25.11.23 인천마라톤"
 
-  # Upcoming Races
-  [[params.hero.upcoming_races]]
-    date = "2026-03-15"
-    event = "서울마라톤"
-    distance = "풀"
-
 #-------------------------------
 # Blog Section
 [params.blog]

@@ -65,10 +65,22 @@ googleAnalytics = "G-VKXN3PNDC0"
     weight = 1
 
   [[menu.main]]
+    name = "북마크"
+    url = "/bookmarks/"
+    parent = "more"
+    weight = 2
+
+  [[menu.main]]
+    name = "스크랩"
+    url = "/scraps/"
+    parent = "more"
+    weight = 3
+
+  [[menu.main]]
     name = "소개"
     url = "/about/"
     parent = "more"
-    weight = 2
+    weight = 4
 
 #-------------------------------
 # Author Settings

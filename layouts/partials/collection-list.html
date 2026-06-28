@@ -1,0 +1,34 @@
+<section class="section collection-page collection-page--{{ .Section }}">
+  <div class="container">
+    <div class="row">
+      <div class="col col-8 col-d-12">
+        <div class="collection-page__head">
+          <h1 class="collection-page__title">{{ .Title }}</h1>
+          {{ with .Description }}
+          <p class="collection-page__description">{{ . }}</p>
+          {{ end }}
+        </div>
+
+        {{ $pages := .RegularPages.ByDate.Reverse }}
+        {{ if $pages }}
+        <div class="collection-list">
+          {{ range $pages }}
+            {{ partial "collection-card.html" . }}
+          {{ end }}
+        </div>
+        {{ else }}
+        <p class="collection-page__empty">아직 저장된 항목이 없습니다.</p>
+        {{ end }}
+      </div>
+
+      <div class="col col-4 col-d-12">
+        <aside class="sidebar">
+          {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+          {{ partial "sidebar-widgets/widget-social.html" . }}
+          {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+          {{ partial "sidebar-widgets/widget-tags.html" . }}
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,129 @@
+backend:
+  name: github
+  repo: heyoom/heyoom.github.io
+  branch: main
+  # GitHub Pages 정적 호스팅에서는 별도 OAuth provider가 필요하다.
+  # provider 확정 후 아래 두 값을 활성화한다.
+  # base_url: https://cms-oauth.example.com
+  # auth_endpoint: auth
+  commit_messages:
+    create: "Add: {{collection}} {{slug}}"
+    update: "Update: {{collection}} {{slug}}"
+    delete: "Delete: {{collection}} {{slug}}"
+    uploadMedia: "Add: 이미지 {{path}}"
+    deleteMedia: "Delete: 이미지 {{path}}"
+
+local_backend: true
+locale: ko
+site_url: https://moyorun.com
+display_url: https://moyorun.com
+media_folder: static/images/uploads
+public_folder: /images/uploads
+
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: posts
+    label: 글
+    label_singular: 글
+    folder: content/posts
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "posts/{{filename}}/"
+    preview_path_date_field: date
+    summary: "{{date}} - {{title}}"
+    sortable_fields: ["date", "title"]
+    view_groups:
+      - label: 카테고리
+        field: categories
+    fields:
+      - { label: 제목, name: title, widget: string }
+      - { label: 작성일, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: 초안, name: draft, widget: boolean, required: false, default: false }
+      - label: 카테고리
+        name: categories
+        widget: list
+        required: false
+        field: { label: 카테고리, name: category, widget: string }
+      - label: 태그
+        name: tags
+        widget: list
+        required: false
+        field: { label: 태그, name: tag, widget: string }
+      - { label: Featured, name: featured, widget: boolean, required: false, default: false }
+      - { label: 대표 이미지, name: image, widget: image, required: false }
+      - { label: 설명, name: description, widget: text, required: false }
+      - { label: 본문, name: body, widget: markdown }
+
+  - name: bookmarks
+    label: 북마크
+    label_singular: 북마크
+    folder: content/bookmarks
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "bookmarks/{{filename}}/"
+    preview_path_date_field: date
+    summary: "{{date}} - {{title}}"
+    sortable_fields: ["date", "title"]
+    filter: { field: content_type, value: bookmark }
+    fields:
+      - { label: CMS 타입, name: content_type, widget: hidden, default: bookmark }
+      - { label: 제목, name: title, widget: string }
+      - { label: 링크, name: link_url, widget: string }
+      - { label: 저장일, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - label: 태그
+        name: tags
+        widget: list
+        required: false
+        field: { label: 태그, name: tag, widget: string }
+      - { label: 설명, name: description, widget: text, required: false }
+      - { label: 메모, name: body, widget: markdown, required: false }
+
+  - name: scraps
+    label: 스크랩
+    label_singular: 스크랩
+    folder: content/scraps
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "scraps/{{filename}}/"
+    preview_path_date_field: date
+    summary: "{{date}} - {{source_type}} - {{title}}"
+    sortable_fields: ["date", "title", "source_type"]
+    view_groups:
+      - label: 출처 유형
+        field: source_type
+    filter: { field: content_type, value: scrap }
+    fields:
+      - { label: CMS 타입, name: content_type, widget: hidden, default: scrap }
+      - { label: 제목, name: title, widget: string }
+      - { label: 출처 URL, name: source_url, widget: string }
+      - label: 출처 유형
+        name: source_type
+        widget: select
+        default: article
+        options:
+          - { label: 글, value: article }
+          - { label: YouTube, value: youtube }
+          - { label: 소셜, value: social }
+          - { label: 기타, value: other }
+      - { label: 썸네일 URL, name: thumbnail_url, widget: string, required: false }
+      - { label: 저장일, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - label: 태그
+        name: tags
+        widget: list
+        required: false
+        field: { label: 태그, name: tag, widget: string }
+      - { label: 설명, name: description, widget: text, required: false }
+      - { label: 본문, name: body, widget: markdown }

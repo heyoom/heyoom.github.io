@@ -1,0 +1,70 @@
+{{ $isBookmark := eq .Section "bookmarks" }}
+{{ $sectionLabel := cond $isBookmark "북마크" "스크랩" }}
+{{ $externalURL := cond $isBookmark .Params.link_url .Params.source_url }}
+{{ $externalLabel := cond $isBookmark "링크 열기" "출처 열기" }}
+{{ $sourceType := "" }}
+{{ with .Params.source_type }}{{ $sourceType = . }}{{ end }}
+{{ if eq $sourceType "youtube" }}
+  {{ $sourceType = "YouTube" }}
+{{ else if eq $sourceType "article" }}
+  {{ $sourceType = "글" }}
+{{ else if eq $sourceType "social" }}
+  {{ $sourceType = "소셜" }}
+{{ else if eq $sourceType "other" }}
+  {{ $sourceType = "기타" }}
+{{ end }}
+{{ $thumbnail := "" }}
+{{ with .Params.thumbnail_url }}{{ $thumbnail = . }}{{ end }}
+{{ with .Params.image }}{{ if not $thumbnail }}{{ $thumbnail = . }}{{ end }}{{ end }}
+
+<div class="container">
+  <div class="row">
+    <div class="col col-8 col-d-12">
+      <div class="collection-single__head">
+        {{ if $thumbnail }}
+        <div class="collection-single__image">
+          <img src="{{ $thumbnail }}" alt="{{ .Title }}" loading="lazy">
+        </div>
+        {{ end }}
+
+        <div class="collection-single__kicker">
+          <span>{{ $sectionLabel }}</span>
+          {{ if $sourceType }}<span>{{ $sourceType }}</span>{{ end }}
+        </div>
+
+        <h1 class="collection-single__title">{{ .Title }}</h1>
+
+        <div class="collection-single__meta">
+          <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006년 1월 2일" }}</time>
+        </div>
+
+        {{ if .Params.tags }}
+        <div class="collection-single__tags">
+          {{ range ($.GetTerms "tags") }}
+          <a href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+          {{ end }}
+        </div>
+        {{ end }}
+
+        {{ with $externalURL }}
+        <a class="collection-single__source" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $externalLabel }}</a>
+        {{ end }}
+      </div>
+
+      <article class="page collection-single">
+        <div class="page__content">
+          {{ .Content }}
+        </div>
+      </article>
+    </div>
+
+    <div class="col col-4 col-d-12">
+      <aside class="sidebar">
+        {{ partial "sidebar-widgets/widget-subscribe.html" . }}
+        {{ partial "sidebar-widgets/widget-social.html" . }}
+        {{ partial "sidebar-widgets/widget-featured-posts.html" . }}
+        {{ partial "sidebar-widgets/widget-tags.html" . }}
+      </aside>
+    </div>
+  </div>
+</div>

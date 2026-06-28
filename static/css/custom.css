@@ -219,6 +219,164 @@
   margin-bottom: 16px;
 }
 
+/* Bookmark and Scrap Collections */
+.collection-page__head {
+  margin-bottom: 32px;
+}
+
+.collection-page__title {
+  margin: 0 0 12px;
+  font-size: 40px;
+  line-height: 1.2;
+  color: var(--heading-font-color);
+}
+
+.collection-page__description,
+.collection-page__empty {
+  margin: 0;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.collection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.collection-card {
+  display: grid;
+  grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px;
+  background: var(--background-alt-color);
+  border-radius: 8px;
+}
+
+.collection-card__image {
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  aspect-ratio: 16 / 10;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.collection-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-card__content {
+  min-width: 0;
+}
+
+.collection-card__meta,
+.collection-single__kicker,
+.collection-single__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--text-color);
+  opacity: 0.72;
+}
+
+.collection-card__meta span,
+.collection-single__kicker span {
+  color: var(--brand-color);
+  font-weight: 700;
+}
+
+.collection-card__title {
+  margin: 0 0 10px;
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.collection-card__title a,
+.collection-single__title {
+  color: var(--heading-font-color);
+}
+
+.collection-card__description {
+  margin: 0 0 14px;
+  color: var(--text-color);
+}
+
+.collection-card__tags,
+.collection-single__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.collection-card__tags a,
+.collection-single__tags a {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--dark-gray);
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.collection-card__source,
+.collection-single__source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  color: var(--button-color);
+  background: var(--gradient-color);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.collection-single__head {
+  margin-bottom: 28px;
+}
+
+.collection-single__image {
+  overflow: hidden;
+  margin-bottom: 22px;
+  border-radius: 8px;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.collection-single__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-single__title {
+  margin: 0 0 12px;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+@media only screen and (max-width: 768px) {
+  .collection-page__title,
+  .collection-single__title {
+    font-size: 32px;
+  }
+
+  .collection-card {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+
 /* Font Family (LineSeed for Korean fallback) */
 body {
   font-family: 'Roboto Mono', "Courier New", "Lucida Console", Monaco, "LineSeed";
